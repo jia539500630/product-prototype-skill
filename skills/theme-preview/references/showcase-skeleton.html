@@ -88,8 +88,15 @@
   .stat-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
   .stat-card .stat-value { font-size: 26px; font-weight: 600; margin-top: 4px; }
 
+  /* Tree / Dialog chrome is PRODUCT-SPECIFIC.
+     Replace indent, row height, connectors, header/footer alignment from evidence.
+     Delete the section if that component was not detected. */
   .tree-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 13px; }
   .tree-children { padding-left: 22px; }
+  .dialog-demo { border: 1px solid var(--border); border-radius: var(--radius); background: #fff; overflow: hidden; max-width: 420px; }
+  .dialog-demo .dialog-head { padding: 12px 16px; border-bottom: 1px solid var(--border); font-weight: 600; display: flex; justify-content: space-between; }
+  .dialog-demo .dialog-body { padding: 16px; font-size: 13px; color: var(--text-secondary); }
+  .dialog-demo .dialog-foot { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
   .empty-state { text-align: center; padding: 36px; color: var(--text-secondary); }
 
   .footer-note { text-align: center; padding: 22px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 20px; }
@@ -177,7 +184,18 @@
     </div>
   </section>
 
-  <!-- Feedback / dialogs / tabs / progress / loading / stats / pagination / nav / empty -->
+  <!-- DISCOVERED COMPONENTS: do not copy these sections as a checklist.
+       After component-discovery.md, emit one section per promoted cluster
+       (any kind: library, wrap, or unnamed product block). Rebuild slots
+       from capture. Delete placeholders that were not discovered. -->
+  <section class="section">
+    <h2 class="section-title">&lt;observed-root-or-inferred-kind&gt;</h2>
+    <div class="card">
+      <!-- reconstruct captured subtree here -->
+    </div>
+  </section>
+
+  <!-- Optional: library widgets that were never discovered — fallback only. -->
   <section class="section">
     <h2 class="section-title">其他组件分区</h2>
     <div class="card">
