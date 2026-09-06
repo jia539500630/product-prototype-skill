@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ip-emr-frontend — Element UI + VXE Table 主题与组件证据预览</title>
+<style>
+  :root {
+    /* evidence: css=dist/css/*.css :export mainColor=#079c66 */
+    --main-color: #079c66;
+    /* evidence: css=dist/css/*.css :export mainColorDeepBg=#005226 */
+    --main-color-deep: #005226;
+    /* evidence: css=dist/css/*.css :export mainColorBg=#ebfff8 */
+    --main-color-bg: #ebfff8;
+    /* evidence: css=dist/css/*.css :export mainColorGradient=linear-gradient(180deg,#fafefd,#e5f9f6) */
+    --main-gradient: linear-gradient(180deg, #fafefd, #e5f9f6);
+    /* evidence: css=dist/css/*.css :export tableBorderColor=#a2d1cc */
+    --table-border: #a2d1cc;
+    /* evidence: css=dist/css/*.css :export hoverBgColor=#edf8f6 */
+    --hover-bg: #edf8f6;
+    /* evidence: css=dist/css/*.css :export fontColor=#41934D dialogFontColor=#226642 */
+    --font-color: #41934D;
+    --dialog-font-color: #226642;
+    /* evidence: css=dist/css/*.css :export pageBg / border / text tokens */
+    --page-bg: #f8f8f8;
+    --main-border: #d5d5d5;
+    --border: #dcdcdc;
+    --color-text: #000;
+    --text-light: #666;
+    --label: #999;
+    --input-bg: #f7f7f7;
+    --active-bg: #efefef;
+    --top-border: #e5e5e5;
+    /* evidence: css=dist/css/*.css :export functional colors */
+    --red: #fe5353;
+    --light-red: #ffeded;
+    --green: #67c23a;
+    --light-green: #f0f9eb;
+    --yellow: #ffa000;
+    --light-yellow: #fff5e5;
+    --blue: #1989fa;
+    --light-blue: #e5f1ff;
+    --purple: #8957a1;
+    --light-purple: #f4e3ff;
+    --purple-deep: #5d66bc;
+    --orange: #f27e5f;
+    --price-orange: #ec6941;
+    --gray: #c5c5c5;
+    --radius: 4px;
+    --font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); font-size: 14px; color: var(--color-text); background: var(--page-bg); line-height: 1.6; }
+
+  .page-header { background: var(--main-gradient); border-bottom: 2px solid var(--table-border); padding: 22px 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .page-header .logo { width: 46px; height: 46px; border-radius: var(--radius); background: var(--main-color); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
+  .page-header h1 { font-size: 21px; font-weight: 600; color: var(--main-color-deep); }
+  .page-header p { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .section { margin-bottom: 38px; }
+  .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ""; width: 4px; height: 16px; background: var(--main-color); border-radius: 2px; }
+  .card { background: #fff; border: 1px solid var(--main-border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--dialog-font-color); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #eee; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .evidence-tag { display: inline-block; font-size: 11px; font-weight: 400; color: var(--font-color); background: var(--main-color-bg); border: 1px solid var(--table-border); padding: 1px 8px; border-radius: 10px; }
+  .fallback-tag { display: inline-block; font-size: 11px; font-weight: 400; color: var(--yellow); background: var(--light-yellow); border: 1px solid var(--yellow); padding: 1px 8px; border-radius: 10px; }
+  .muted { color: var(--text-light); }
+  .small { font-size: 12px; }
+  .flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  code { background: #f5f5f5; border: 1px solid #eee; border-radius: 3px; padding: 0 4px; font-size: 12px; }
+  pre { background: #f5f5f5; border: 1px solid var(--main-border); border-radius: var(--radius); padding: 12px; overflow-x: auto; font-size: 12px; }
+
+  /* Palette */
+  .color-palette { display: flex; flex-wrap: wrap; gap: 12px; }
+  .color-swatch { width: 118px; border: 1px solid var(--main-border); border-radius: 6px; overflow: hidden; background: #fff; }
+  .color-swatch .swatch-color { height: 58px; }
+  .color-swatch .swatch-info { padding: 7px; font-size: 11px; }
+  .color-swatch .swatch-name { font-weight: 600; color: var(--color-text); }
+  .color-swatch .swatch-hex { color: var(--label); font-family: monospace; margin-top: 2px; word-break: break-all; }
+  .palette-group-label { font-size: 13px; color: var(--label); margin: 16px 0 8px; }
+
+  /* Element-UI-like components (styling copied from evidence tokens, not external CSS) */
+  .el-like-btn { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 15px; border-radius: var(--radius); font-size: 14px; cursor: pointer; }
+  .btn-primary { background: var(--main-color); border: 1px solid var(--main-color); color: #fff; }
+  .btn-deep { background: var(--main-color-deep); border: 1px solid var(--main-color-deep); color: #fff; }
+  .btn-border { background: #fff; border: 1px solid var(--main-color); color: var(--main-color); }
+  .btn-danger { background: #fff; border: 1px solid var(--red); color: var(--red); }
+  .btn-cancel { background: #fff; border: 1px solid var(--border); color: var(--text-light); }
+  .btn-disabled { background: #f5f5f5; border: 1px solid var(--border); color: #bfbfbf; cursor: not-allowed; }
+
+  .el-like-input, .el-like-select, .el-like-textarea { height: 32px; padding: 0 10px; border: 1px solid var(--main-border); border-radius: var(--radius); font-size: 14px; background: #fff; color: var(--color-text); outline: none; }
+  .el-like-input:focus, .el-like-select:focus { border-color: var(--main-color); }
+  .el-like-textarea { height: 70px; padding: 7px 10px; resize: vertical; }
+  .form-item { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 13px; color: var(--label); }
+
+  .el-like-checkbox, .el-like-radio { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .check-box, .radio-circle { width: 14px; height: 14px; border: 1px solid var(--main-border); background: #fff; display: inline-block; position: relative; }
+  .check-box { border-radius: 3px; }
+  .check-box.checked::after { content: "✓"; position: absolute; inset: 0; color: #fff; background: var(--main-color); font-size: 10px; line-height: 14px; text-align: center; }
+  .radio-circle { border-radius: 50%; }
+  .radio-circle.checked { background: var(--main-color); border-color: var(--main-color); }
+
+  .el-like-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; font-size: 12px; }
+  .tag-success { background: var(--light-green); color: var(--green); border: 1px solid var(--green); }
+  .tag-error { background: var(--light-red); color: var(--red); border: 1px solid var(--red); }
+  .tag-warning { background: var(--light-yellow); color: var(--yellow); border: 1px solid var(--yellow); }
+  .tag-info { background: var(--light-blue); color: var(--blue); border: 1px solid var(--blue); }
+  .tag-main { background: var(--main-color-bg); color: var(--main-color); border: 1px solid var(--main-color); }
+  .tag-purple { background: var(--light-purple); color: var(--purple); border: 1px solid var(--purple); }
+
+  .el-like-table { width: 100%; border: 1px solid var(--table-border); border-radius: var(--radius); border-collapse: collapse; overflow: hidden; background: #fff; }
+  .el-like-table th { background: var(--main-gradient); color: var(--font-color); font-weight: 400; text-align: left; padding: 0 12px; height: 38px; border-right: 1px solid var(--table-border); border-bottom: 1px solid var(--table-border); }
+  .el-like-table th:last-child { border-right: 0; }
+  .el-like-table td { padding: 0 12px; height: 34px; border-right: 1px solid #ebeef5; border-bottom: 1px solid #ebeef5; }
+  .el-like-table td:last-child { border-right: 0; }
+  .el-like-table tr:hover td { background: var(--hover-bg); }
+  .el-like-table tr.selected td { background: var(--main-color-bg); color: var(--main-color); }
+
+  .el-like-dialog { border: 1px solid var(--main-border); border-radius: var(--radius); background: #fff; overflow: hidden; }
+  .el-like-dialog .dialog-head { padding: 12px 16px; border-bottom: 1px solid #e5e5e5; color: var(--dialog-font-color); font-weight: 600; display: flex; justify-content: space-between; }
+  .el-like-dialog .dialog-body { padding: 16px; font-size: 13px; color: var(--text-light); }
+  .el-like-dialog .dialog-foot { padding: 10px 16px; border-top: 1px solid #e5e5e5; display: flex; justify-content: center; gap: 10px; }
+
+  .el-like-tabs { border-bottom: 1px solid var(--main-border); display: flex; }
+  .el-like-tab { padding: 0 14px; height: 36px; line-height: 36px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-light); font-size: 14px; cursor: pointer; }
+  .el-like-tab.active { color: var(--main-color); border-bottom-color: var(--main-color); }
+
+  .el-like-steps { display: flex; }
+  .step-item { flex: 1; text-align: center; color: var(--label); font-size: 13px; }
+  .step-item .step-num { width: 24px; height: 24px; line-height: 24px; border-radius: 50%; margin: 0 auto 6px; background: var(--main-color); color: #fff; font-size: 12px; }
+  .step-item.done .step-num { background: var(--main-color-bg); color: var(--main-color); border: 1px solid var(--main-color); }
+
+  .el-like-progress { height: 6px; background: #ebeef5; border-radius: 3px; overflow: hidden; }
+  .el-like-progress i { display: block; height: 100%; background: var(--main-color); border-radius: 3px; }
+  .progress-row { display: grid; grid-template-columns: 110px 1fr 48px; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 13px; }
+
+  .el-like-alert { padding: 9px 12px; border-radius: var(--radius); font-size: 13px; margin-bottom: 8px; }
+  .alert-success { background: var(--light-green); border: 1px solid rgba(103,194,58,.35); color: var(--green); }
+  .alert-error { background: var(--light-red); border: 1px solid rgba(254,83,83,.35); color: var(--red); }
+  .alert-warning { background: var(--light-yellow); border: 1px solid rgba(255,160,0,.35); color: var(--yellow); }
+  .alert-info { background: var(--light-blue); border: 1px solid rgba(25,137,250,.35); color: var(--blue); }
+
+  .el-like-tree { font-size: 13px; }
+  .tree-line { padding: 5px 0 5px 18px; position: relative; }
+  .tree-line::before { content: ""; position: absolute; left: 6px; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--table-border); }
+  .tree-line.parent::before { bottom: 50%; }
+  .tree-line.last::before { display: none; }
+  .tree-text { display: inline-flex; align-items: center; gap: 6px; }
+
+  .pager { display: flex; align-items: center; gap: 4px; }
+  .pager button { min-width: 26px; height: 26px; border: 1px solid var(--main-border); background: #fff; border-radius: 3px; cursor: pointer; font-size: 13px; }
+  .pager button.active { background: var(--main-color); border-color: var(--main-color); color: #fff; }
+
+  .spinner { width: 22px; height: 22px; border: 3px solid var(--hover-bg); border-top-color: var(--main-color); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note { text-align: center; padding: 22px; font-size: 12px; color: var(--label); border-top: 1px solid var(--top-border); margin-top: 20px; }
+  @media (max-width: 900px) { .grid-2, .grid-4 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo">EMR</div>
+  <div>
+    <h1>ip-emr-frontend — 主题与组件证据预览</h1>
+    <p>基于 /home/imac/byway/ip-emr-frontend/dist 静态产物分析 · Element UI + VXE Table · 主色 #079c66</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 1. Evidence ===== -->
+  <section class="section">
+    <h2 class="section-title">分析证据</h2>
+    <div class="card">
+      <div class="grid-2">
+        <div>
+          <div class="card-title">来源</div>
+          <div class="small muted">
+            <div>dist 路径：<code>/home/imac/byway/ip-emr-frontend/dist</code></div>
+            <div>CSS 文件：178 个 · JS 文件：317 个</div>
+            <div>index.html：webpack 构建壳，标题 <code>ip-emr-frontend</code></div>
+          </div>
+        </div>
+        <div>
+          <div class="card-title">框架判定（CSS/JS 静态签名）</div>
+          <div class="small muted">
+            <div>Element UI：<code>.el-button</code> / <code>.el-table</code> / <code>.el-dialog</code> / <code>.el-tabs</code> 等大量选择器</div>
+            <div>VXE Table：<code>.vxe-table</code> / <code>.vxe-pager</code> / <code>.vxe-modal</code> / <code>.vxe-input</code></div>
+            <div>业务领域来自 JS 真实文案：医嘱、患者、药品名称、手术申请/记录等</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <pre>/* evidence: css=dist/css/*.css :export */
+mainColor=#079c66
+mainColorDeepBg=#005226
+mainColorBg=#ebfff8
+mainColorGradient=linear-gradient(180deg,#fafefd,#e5f9f6)
+tableBorderColor=#a2d1cc
+fontColor=#41934D
+dialogFontColor=#226642
+pageBg=#f8f8f8
+/* evidence: js=dist/js/*.js 业务文案 */
+“医嘱” / “患者姓名” / “药品名称” / “开单医生” / “手术申请” / “手术记录”</pre>
+    </div>
+  </section>
+
+  <!-- ===== 2. Theme palette ===== -->
+  <section class="section">
+    <h2 class="section-title">主题色板</h2>
+    <div class="card">
+      <div class="palette-group-label">核心主题色 — CSS :export</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#079c66"></div><div class="swatch-info"><div class="swatch-name">mainColor</div><div class="swatch-hex">#079c66</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#005226"></div><div class="swatch-info"><div class="swatch-name">mainColorDeepBg</div><div class="swatch-hex">#005226</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#ebfff8"></div><div class="swatch-info"><div class="swatch-name">mainColorBg</div><div class="swatch-hex">#ebfff8</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:linear-gradient(180deg,#fafefd,#e5f9f6)"></div><div class="swatch-info"><div class="swatch-name">mainColorGradient</div><div class="swatch-hex">#fafefd→#e5f9f6</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#a2d1cc"></div><div class="swatch-info"><div class="swatch-name">tableBorderColor</div><div class="swatch-hex">#a2d1cc</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#edf8f6"></div><div class="swatch-info"><div class="swatch-name">hoverBgColor</div><div class="swatch-hex">#edf8f6</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#41934d"></div><div class="swatch-info"><div class="swatch-name">fontColor</div><div class="swatch-hex">#41934D</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#226642"></div><div class="swatch-info"><div class="swatch-name">dialogFontColor</div><div class="swatch-hex">#226642</div></div></div>
+      </div>
+      <div class="palette-group-label">页面、文字与边框 — CSS :export</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#f8f8f8"></div><div class="swatch-info"><div class="swatch-name">pageBg</div><div class="swatch-hex">#f8f8f8</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#000000"></div><div class="swatch-info"><div class="swatch-name">textColor</div><div class="swatch-hex">#000</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#666666"></div><div class="swatch-info"><div class="swatch-name">textLightColor</div><div class="swatch-hex">#666</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#999999"></div><div class="swatch-info"><div class="swatch-name">labelColor</div><div class="swatch-hex">#999</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#d5d5d5"></div><div class="swatch-info"><div class="swatch-name">mainBorderColor</div><div class="swatch-hex">#d5d5d5</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#f7f7f7"></div><div class="swatch-info"><div class="swatch-name">inputBgColor</div><div class="swatch-hex">#f7f7f7</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#8c939b"></div><div class="swatch-info"><div class="swatch-name">copyrightColor</div><div class="swatch-hex">#8c939b</div></div></div>
+      </div>
+      <div class="palette-group-label">功能/状态色 — CSS :export</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#fe5353"></div><div class="swatch-info"><div class="swatch-name">red</div><div class="swatch-hex">#fe5353</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#ffeded"></div><div class="swatch-info"><div class="swatch-name">lightRed</div><div class="swatch-hex">#ffeded</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#67c23a"></div><div class="swatch-info"><div class="swatch-name">green</div><div class="swatch-hex">#67c23a</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#f0f9eb"></div><div class="swatch-info"><div class="swatch-name">lightGreen</div><div class="swatch-hex">#f0f9eb</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#ffa000"></div><div class="swatch-info"><div class="swatch-name">yellow</div><div class="swatch-hex">#ffa000</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#fff5e5"></div><div class="swatch-info"><div class="swatch-name">lightYellow</div><div class="swatch-hex">#fff5e5</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#1989fa"></div><div class="swatch-info"><div class="swatch-name">blue</div><div class="swatch-hex">#1989fa</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#e5f1ff"></div><div class="swatch-info"><div class="swatch-name">lightBlue</div><div class="swatch-hex">#e5f1ff</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#8957a1"></div><div class="swatch-info"><div class="swatch-name">purple</div><div class="swatch-hex">#8957a1</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#f4e3ff"></div><div class="swatch-info"><div class="swatch-name">lightPurple</div><div class="swatch-hex">#f4e3ff</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#5d66bc"></div><div class="swatch-info"><div class="swatch-name">purpleColor</div><div class="swatch-hex">#5d66bc</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#ec6941"></div><div class="swatch-info"><div class="swatch-name">priceOrange</div><div class="swatch-hex">#ec6941</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. Confirmed components ===== -->
+  <section class="section">
+    <h2 class="section-title">组件证据（CSS/JS 静态签名确认）</h2>
+
+    <!-- evidence: css=.el-button .el-button--primary / .el-button--danger -->
+    <div class="card">
+      <div class="card-title">Element Button <span class="evidence-tag">CSS 签名</span></div>
+      <div class="flex">
+        <button class="el-like-btn btn-primary" type="button">主要按钮</button>
+        <button class="el-like-btn btn-deep" type="button">深色按钮</button>
+        <button class="el-like-btn btn-border" type="button">边框按钮</button>
+        <button class="el-like-btn btn-danger" type="button">删除</button>
+        <button class="el-like-btn btn-cancel" type="button">取消</button>
+        <button class="el-like-btn btn-disabled" type="button" disabled>禁用</button>
+      </div>
+      <div class="small muted" style="margin-top:8px;">签名依据：<code>.el-button</code> ×168、<code>.el-button--primary</code> ×65、<code>.el-button--danger</code> ×22</div>
+    </div>
+
+    <!-- evidence: css=.el-input .el-input__inner .el-select -->
+    <div class="card">
+      <div class="card-title">Element Form — Input / Select / Textarea <span class="evidence-tag">CSS 签名</span></div>
+      <div class="grid-2">
+        <div class="form-item"><label class="form-label">住院号/患者姓名</label><input class="el-like-input" placeholder="住院号/患者姓名"></div>
+        <div class="form-item"><label class="form-label">医嘱类型</label><select class="el-like-select"><option>长期医嘱</option><option>临时医嘱</option></select></div>
+        <div class="form-item"><label class="form-label">药品名称</label><input class="el-like-input" placeholder="药品名称"></div>
+        <div class="form-item"><label class="form-label">备注</label><textarea class="el-like-textarea" placeholder="备注"></textarea></div>
+      </div>
+      <div class="small muted" style="margin-top:8px;">placeholder 与选项文案来自 JS 产物：<code>住院号/患者姓名</code>、<code>长期医嘱/临时医嘱</code>、<code>药品名称</code>。</div>
+    </div>
+
+    <!-- evidence: css=.el-checkbox .el-radio -->
+    <div class="card">
+      <div class="card-title">Element Radio / Checkbox <span class="evidence-tag">CSS 签名</span></div>
+      <div class="grid-2">
+        <div class="flex" style="flex-direction:column;align-items:flex-start;">
+          <label class="el-like-radio"><span class="radio-circle checked"></span>长期医嘱</label>
+          <label class="el-like-radio"><span class="radio-circle"></span>临时医嘱</label>
+        </div>
+        <div class="flex" style="flex-direction:column;align-items:flex-start;">
+          <label class="el-like-checkbox"><span class="check-box checked"></span>手术申请</label>
+          <label class="el-like-checkbox"><span class="check-box"></span>手术记录</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- evidence: css=.el-table .el-tree -->
+    <div class="card">
+      <div class="card-title">Element Table / Tree <span class="evidence-tag">CSS 签名</span></div>
+      <table class="el-like-table">
+        <thead><tr><th style="width:46px;">序号</th><th>医嘱名称</th><th>药品名称</th><th>开单医生</th><th>类型</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr class="selected"><td>1</td><td>示例医嘱 A</td><td>示例药品 A</td><td>张医生</td><td>长期医嘱</td><td><span class="el-like-tag tag-success">已执行</span></td></tr>
+          <tr><td>2</td><td>示例医嘱 B</td><td>示例药品 B</td><td>李医生</td><td>临时医嘱</td><td><span class="el-like-tag tag-error">已停止</span></td></tr>
+          <tr><td>3</td><td>示例医嘱 C</td><td>示例药品 C</td><td>王医生</td><td>手术申请</td><td><span class="el-like-tag tag-info">申请中</span></td></tr>
+        </tbody>
+      </table>
+      <div class="small muted" style="margin:10px 0;">列名与状态词取自 JS 产物（医嘱/药品/开单医生/已执行/已停止）；行内容为演示占位。</div>
+      <div class="el-like-tree">
+        <div class="tree-line parent"><span class="tree-text"><span class="el-like-tag tag-main">长期医嘱</span></span></div>
+        <div class="tree-line"><span class="tree-text">示例医嘱 A</span></div>
+        <div class="tree-line last"><span class="tree-text">示例医嘱 B</span></div>
+        <div class="tree-line parent"><span class="tree-text"><span class="el-like-tag tag-info">手术申请</span></span></div>
+        <div class="tree-line last"><span class="tree-text">示例手术申请</span></div>
+      </div>
+    </div>
+
+    <!-- evidence: css=.el-dialog .el-message-box -->
+    <div class="card">
+      <div class="card-title">Element Dialog / MessageBox <span class="evidence-tag">CSS 签名</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="el-like-dialog">
+          <div class="dialog-head"><span>删除临时医嘱</span><span>✕</span></div>
+          <div class="dialog-body">请勾选需要删除的临时医嘱</div>
+          <div class="dialog-foot"><button class="el-like-btn btn-cancel">取消</button><button class="el-like-btn btn-danger">删除</button></div>
+        </div>
+        <div class="el-like-alert alert-warning" style="align-self:center;">
+          ⚠ 当前勾选的医嘱没有可删除的临时医嘱
+        </div>
+      </div>
+      <div class="small muted" style="margin-top:8px;">对话框与警告文案来自 JS 产物真实字符串。</div>
+    </div>
+
+    <!-- evidence: css=.el-tabs / .el-step / .el-progress -->
+    <div class="card">
+      <div class="card-title">Element Tabs / Steps / Progress <span class="evidence-tag">CSS 签名</span></div>
+      <div class="el-like-tabs">
+        <button class="el-like-tab active" type="button">手术申请</button>
+        <button class="el-like-tab" type="button">手术记录</button>
+      </div>
+      <div class="small muted" style="margin:8px 0;">Tabs 文案来自 JS：手术记录 / 手术申请</div>
+      <div class="el-like-steps" style="margin:8px 0 14px;">
+        <div class="step-item done"><div class="step-num">✓</div>填写</div>
+        <div class="step-item"><div class="step-num">2</div>审核</div>
+        <div class="step-item"><div class="step-num">3</div>执行</div>
+      </div>
+      <div class="progress-row"><span class="muted">执行进度</span><div class="el-like-progress"><i style="width:64%;"></i></div><span>64%</span></div>
+      <div class="small muted">Steps 仅为通用步骤说明，非产物内固定文案。</div>
+    </div>
+
+    <!-- evidence: css=.vxe-table .vxe-pager .vxe-modal .vxe-input -->
+    <div class="card">
+      <div class="card-title">VXE Table / Pager / Modal <span class="evidence-tag">CSS 签名</span></div>
+      <div style="border:1px solid var(--table-border);border-radius:4px;overflow:hidden;background:#fff;">
+        <table class="el-like-table" style="border:0;">
+          <thead><tr><th>病历号</th><th>患者姓名</th><th>申请类型</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>IP-0001</td><td>示例患者 1</td><td>手术申请</td><td><span class="el-like-tag tag-warning">待确认</span></td></tr>
+            <tr><td>IP-0002</td><td>示例患者 2</td><td>手术记录</td><td><span class="el-like-tag tag-success">已执行</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex" style="justify-content:space-between;margin-top:10px;">
+        <span class="small muted">共 2 条示例记录</span>
+        <div class="pager">
+          <button type="button">‹</button>
+          <button class="active" type="button">1</button>
+          <button type="button">2</button>
+          <button type="button">3</button>
+          <button type="button">›</button>
+        </div>
+      </div>
+      <div class="small muted" style="margin-top:8px;">签名依据：<code>.vxe-table</code> ×865、<code>.vxe-pager</code> ×325、<code>.vxe-modal</code> ×216、<code>.vxe-input</code> ×816。</div>
+    </div>
+  </section>
+
+  <!-- ===== 4. Fallback ===== -->
+  <section class="section">
+    <h2 class="section-title">演示占位（无直接页面 DOM 实据，均标注模拟）</h2>
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">Tag / Alert 组合 <span class="fallback-tag">模拟</span></div>
+      <div class="flex">
+        <span class="el-like-tag tag-main">主题</span>
+        <span class="el-like-tag tag-success">成功</span>
+        <span class="el-like-tag tag-error">错误</span>
+        <span class="el-like-tag tag-warning">警告</span>
+        <span class="el-like-tag tag-info">信息</span>
+        <span class="el-like-tag tag-purple">紫色</span>
+      </div>
+      <div style="margin-top:10px;">
+        <div class="el-like-alert alert-success">✅ 示例成功提示（模拟）</div>
+        <div class="el-like-alert alert-error">❌ 示例错误提示（模拟）</div>
+      </div>
+    </div>
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">Loading <span class="fallback-tag">模拟</span></div>
+      <div class="flex">
+        <div class="spinner"></div>
+        <span class="muted">加载中…</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer-note">
+  基于 /home/imac/byway/ip-emr-frontend/dist 静态产物 CSS/JS 分析生成 · Element UI + VXE Table · 主色 #079c66 · 全部组件为产物签名证据，未观测运行时 DOM 的占位已标注“模拟”
+</div>
+
+</body>
+</html>

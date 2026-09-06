@@ -1,89 +1,93 @@
 ---
 name: theme-preview
-description: Use when the user asks to generate a theme-style and component-example HTML prototype from a build artifact, dist folder, CSS bundle, or URL — producing an Element-UI-style component documentation page that showcases the product's theme colors and common UI components on a single static HTML file. Triggers on phrases like "分析产物生成主题预览", "生成主题风格和组件示例HTML原型", "像element-ui文档展示组件", or "make a theme/component showcase page".
+description: Use when the user points at a live page URL, a dist/static build folder, or a CSS/JS/HTML artifact and wants a single-file static showcase of that product's real theme and detected components. Triggers include "分析这个URL/产物，生成主题组件预览", "展示该产品的主题和组件", "把页面/产物的主题和常用组件做成一个静态展示页", or "make a theme/component showcase page". Do not use for designing a new product UI; use for inspecting and visualizing an existing product.
 ---
 
-# Theme Preview Generator
+# Evidence-Based Theme & Component Showcase
 
-Turn an existing product's build artifact (bundled CSS, `dist/`, a URL's CSS) into a self-contained, Element-UI-style **component documentation page**: one static `theme-preview.html` that shows the theme palette and every common component rendered live.
+Given one product's URL or build artifact, produce one static `theme-preview.html` that documents the product's actual visual tokens and components.
+
+**Core principle:** never claim a color, component, framework, or business domain is real until the source proves it. Every preview decision must be traceable to an artifact, page markup, runtime DOM, or explicit theme configuration.
 
 ## When to Use
 
-Use when the user wants to *see* a product's visual identity and components, not to build a real app:
+Use when the user wants to *see* an existing product's visual identity and UI components as documentation:
 
-- "分析产物/url地址，生成主题风格和组件示例HTML原型"
-- "把改产物的主题和常用组件展示出来在一个静态HTML上"
-- "类似element-ui组件文档展示效果"
+- "分析这个URL/产物，生成主题和组件展示页"
+- "把这个站点的主题色和实际组件做成一个静态 HTML 原型"
+- "make a component showcase from this site/artifact"
 
-A concrete working example lives at `references/template.html` — read it before starting.
+Do not use when the user wants to build a new app, redesign from scratch, or produce screenshots of a running product.
 
-## Goal
+## Evidence Rules (read before anything else)
 
-**Produce one static HTML file** (no build step, no framework) that:
-
-1. Documents the **theme**: extracted color palette, typography, status colors, gradients.
-2. Renders a **component gallery**: buttons, forms, tables, tags, dialogs, tabs, progress, loading, stat cards, pagination, breadcrumb, empty state, and the rest — matching the real product's styling conventions.
-3. Looks like an **Element-UI component docs page**: sections, cards, `section-title` headers, code-reviewable inline CSS.
+1. **No memory-based colors or components.** Do not reuse a palette, class vocabulary, or sample content from this skill, another product, or previous runs unless the current source shows the same value.
+2. **No fixed template output.** `references/showcase-skeleton.html` shows only a neutral page structure and CSS conventions. It is not a final example to copy; its colors, component set, and content are placeholders.
+3. **Evidence quality order:**
+   - **DOM/computed evidence** (highest): rendered page elements, class names, inline `<style>`, computed colors and layout values.
+   - **Explicit source tokens**: CSS custom properties (`:root`), SCSS `:export`, framework theme objects (Material UI `palette`, Ant `theme`, etc.).
+   - **Static signatures**: CSS selectors, HTML markup, JS bundle strings, framework/component class prefixes.
+   - **Low-confidence heuristics**: color frequency, `theme-color` meta, favicon colors. Use only when labeled low-confidence, never as the primary palette.
+4. Anything built without real evidence must be marked **fallback**. Use `data-evidence="fallback"` on those sections and say "模拟/未在产物中确认" in the visible label. Never present fallback styling as the product's real style.
+5. The output stays one self-contained static HTML file. No framework, build step, or real interactivity.
 
 ## Workflow
 
-### 1. Locate the source of truth
+### 1. Inspect the input
 
-- **Build artifact / dist folder**: find the compiled CSS (e.g. `*/app.*.css`, `theme-chalk`, or a Vite/Webpack bundle). Prefer the real CSS over memory.
-- **URL**: if unreachable (offline/sandboxed), tell the user you'll base the preview on the given/known theme values, and proceed with what's available rather than blocking.
+- **URL**: fetch the HTML first. Read `<title>`, meta, loaded CSS/JS assets. If the page is a JS-rendered SPA and a headless browser is available, render it and dump the resulting DOM/computed styles. If rendering fails or is blocked, degrade to source-only analysis and say so in the footer.
+- **dist / static folder**: locate compiled CSS (`*.css`, `theme-chalk`, Vite/Webpack bundles), HTML templates, and JS chunks. Prefer files that declare theme variables, `:export` tokens, or framework theme objects.
+- If no source can be reached, do not block: tell the user the preview will be based only on available/known values, and mark missing evidence.
 
-### 2. Extract the theme
+### 2. Identify the product and framework
 
-Read the CSS and record, at minimum:
+- Product name and business domain: derive from `<title>`, page headings, menu items, labels, and visible copy. Do not guess a domain if the source is ambiguous.
+- UI framework/component library: compare CSS prefixes, class names, and JS strings against `references/framework-signatures.md`. Record which signature and file proved the match.
 
-- **Main color** + deep variant + light background + gradient (e.g. `#079c66`, `#005226`, `#ebfff8`, `#fafefd→#e5f9f6`).
-- **Functional colors**: red/green/blue/yellow/orange/purple and their light "bg" variants.
-- **Border / hover / table border / shadow / page-bg** and **text color scale** (primary, secondary `#666`, label `#999`).
-- **Radius, font family, input heights, padding** conventions.
+### 3. Extract the theme
 
-Organize these into CSS custom properties under `:root` in the output.
+- Collect only values found in the current source, in the evidence-quality order above.
+- Map colors to semantic roles where the source names them (`primary`, `secondary`, `danger`, `pageBg`, `textLightColor`, etc.). Do not rename or invent semantic meanings.
+- Also record layout conventions when discoverable: radius, font family, input height, padding, border, shadow, page background.
+- If a common role has no evidence (e.g. no warning color found), omit it or show it under "未找到证据" rather than choosing a color.
 
-### 3. Build the theme section
+### 4. Detect components and domain
 
-Show the palette as swatches:
-- A `color-palette` grid of swatches with the color block, a semantic `name`, and its `hex`.
-- Group into "主色调" (core palette incl. gradients) vs "功能色" (functional/status colors).
+- Component evidence can come from: rendered DOM (element types, class names, visible states), CSS selectors, or JS component names.
+- Show components only when evidence maps to a recognizable category (button, form, table, tag, dialog, tabs, progress, pagination, etc.). Use `references/framework-signatures.md` for the framework-specific mapping.
+- If common components cannot be confirmed, add them as clearly labeled fallback demos instead of claiming they exist in the product.
+- Sample content must use vocabulary observed on the page or artifact (menus, form labels, table columns). When none can be derived, use neutral admin copy: 用户/任务/团队/数据/设置. Never default to a single business (medical, e-commerce, etc.).
 
-### 4. Build the component gallery
+### 5. Generate the showcase
 
-Render each common component as a demo with real theme tokens, matching Element-UI conventions. Include at least:
+- Build one static HTML using the neutral layout from `references/showcase-skeleton.html`, replacing every placeholder with extracted evidence values.
+- Palette and component sections must carry provenance for review. Add an HTML comment such as `<!-- evidence: css:primary-main=#673AB7 -->` or `data-evidence` attributes.
+- The page must not claim a framework, component, or palette it did not detect. The footer states: source URL/path, detected stack, primary/main color, and any fallback/missing evidence.
 
-- **文字与状态** — text color scale + status dots (success/danger/warning/info).
-- **按钮** — primary, deep, outline, shadow, functional (delete/confirm/detail/warning/cancel/disabled).
-- **表单** — inputs, selects, textarea, addon input, required marks, disabled state, date.
-- **单选/多选** — radio circles & checkbox squares using the main color.
-- **标签与徽章** — Tag (per status color) and Badge.
-- **表格** — Element-style table with themed gradient header, striped borders, hover row; plus a **tree/branch** variant (parent → children with connector lines).
-- **提示反馈** — Alert info/success/warning/error.
-- **对话框** — basic and warning dialog demos (static mock, not functional).
-- **选项卡/进度条/加载状态/数据卡片/分页/面包屑/分割线/空状态** — matching the example.
+### 6. Verify before finishing
 
-Use domain-realistic sample content relevant to the product (e.g. medical: 医嘱/药品/患者), like the example does.
-
-### 5. Style conventions
-
-- Inline `<style>` block; define everything as CSS custom properties referenced everywhere.
-- Reuse the example's class vocabulary: `.section`, `.section-title`, `.card`, `.color-swatch`, `.btn-group`, `.form-*`, `.tag-*`, `.alert-*`, `.demo-table`, `.pagination`, `.breadcrumb`, etc. — keep names consistent so the output reads like Element-UI docs.
-- Self-contained: no framework dependency. You **may** optionally link `element-ui`'s theme-chalk CSS, but the demo styling must come from the extracted theme so it renders offline.
-
-### 6. Footer + attribution
-
-End with a footer noting the source ("基于 `<产物/url>` CSS 分析生成") and the discovered main theme color.
+- Every hex/gradient shown appears in the collected evidence (search the source again to confirm).
+- No leftover text, colors, or component names from previous examples appear in the output.
+- The HTML opens standalone and renders without network dependencies (the optional Element-UI link from the old template must not be copied).
 
 ## Output
 
-- Write to `theme-preview.html` in the repo root (match the example filename) unless the user asks otherwise.
-- Header subtitle should name the real product/framework of the analyzed artifact.
-- Keep `lang="zh-CN"`, UTF-8, responsive single page.
+- Write to `theme-preview.html` in the current repo root unless the user gives another filename.
+- Header subtitle names the real product and detected framework, e.g. "基于 <source> 分析 · React + Material-UI".
+- `lang` follows the user's language, defaulting to `zh-CN` when ambiguous.
 
 ## Common Mistakes
 
-- Inventing colors the artifact doesn't have — extract from source, and if a value genuinely can't be found, mark it clearly.
-- Blocking a URL-only request on network access — proceed from known/given values instead.
-- Adding real JS interactivity or building a multi-file app — this is a **static showcase**, not a product feature.
-- Leaving hardcoded colors scattered instead of centralized `:root` variables.
+- Copying `references/showcase-skeleton.html`, old IP-EMR output, or any remembered palette as the final artifact.
+- Styling the preview like Element-UI for a product that is Material UI, Ant Design, or custom.
+- Inventing semantic color names (`mainColorDeep`) not present in the source.
+- Using fixed business copy (医疗/电商/后台) for every product.
+- Leaving hardcoded colors outside `:root` CSS variables.
+- Claiming a component exists when only a framework signature or a generic fallback was used.
+
+## Red Flags — Stop and Re-check Evidence
+
+- "这个主题应该是 X" without a file/DOM match.
+- Reusing the previous product's palette because it "looks similar".
+- Copying the full old `template.html` content into the new output.
+- Marking fallback demos as "已确认".

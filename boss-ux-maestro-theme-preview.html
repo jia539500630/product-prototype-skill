@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boss Ultimate — Material-UI 主题与组件证据预览</title>
+<style>
+  :root {
+    /* evidence: js=main.5cbb7443a26c09528c84.js _o.theme="purpleRedTheme" */
+    /* evidence: js=themeConfig purpleRedTheme primary #673AB7 */
+    --primary: #673AB7;
+    --primary-dark: #512DA8;
+    --primary-light: #EDE7F6;
+    /* evidence: js=themeConfig purpleRedTheme secondary #EC407A */
+    --secondary: #EC407A;
+    --secondary-dark: #C2185B;
+    --secondary-light: #FCE4EC;
+    /* evidence: dom=runtime <style> #fafafa page background / #fff paper */
+    --page-bg: #FAFAFA;
+    --paper: #FFFFFF;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-disabled: #9E9E9E;
+    --border: #E0E0E0;
+    --divider: rgba(0,0,0,.12);
+    /* evidence: dom=runtime style rules .MuiLinearProgress / status colors */
+    --success: #4CAF50;
+    --error: #F44336;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --orange-accent: #FB8C00;
+    --radius: 4px;
+    --shadow-1: 0 1px 3px rgba(0, 0, 0, .12);
+    --shadow-2: 0 2px 8px rgba(0, 0, 0, .16);
+    --font-family: "Roboto", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); font-size: 14px; color: var(--text-primary); background: var(--page-bg); line-height: 1.6; }
+  a { color: var(--primary); }
+
+  .page-header { background: var(--paper); border-bottom: 1px solid var(--border); padding: 22px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .page-header .logo { width: 46px; height: 46px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; box-shadow: var(--shadow-1); }
+  .page-header h1 { font-size: 21px; font-weight: 600; }
+  .page-header p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .section { margin-bottom: 38px; }
+  .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ""; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
+  .card { background: var(--paper); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow-1); }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--divider); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .evidence-tag { display: inline-block; font-size: 11px; color: var(--text-secondary); background: var(--divider); border: 1px solid var(--border); padding: 1px 8px; border-radius: 10px; font-weight: 400; }
+  .fallback-tag { display: inline-block; font-size: 11px; color: var(--warning); background: rgba(255,152,0,.12); border: 1px solid var(--warning); padding: 1px 8px; border-radius: 10px; font-weight: 400; }
+  .muted { color: var(--text-secondary); }
+  .small { font-size: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+  /* Palette */
+  .color-palette { display: flex; flex-wrap: wrap; gap: 12px; }
+  .color-swatch { width: 118px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--paper); }
+  .color-swatch .swatch-color { height: 58px; }
+  .color-swatch .swatch-info { padding: 7px; font-size: 11px; }
+  .color-swatch .swatch-name { font-weight: 600; color: var(--text-primary); }
+  .color-swatch .swatch-hex { color: var(--text-secondary); font-family: monospace; margin-top: 2px; word-break: break-all; }
+  .palette-group-label { font-size: 13px; color: var(--text-secondary); margin: 16px 0 8px; }
+
+  /* Material-like components */
+  .mui-appbar { background: var(--primary); color: #fff; border-radius: 4px; box-shadow: var(--shadow-2); }
+  .mui-toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; min-height: 52px; }
+  .icon-btn { width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: inherit; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .mui-toolbar .spacer { flex: 1; }
+  .search-wrap { display: flex; align-items: center; color: rgba(255,255,255,.85); border-bottom: 1px solid rgba(255,255,255,.7); padding: 0 6px 4px; margin: 0 8px; min-width: 180px; }
+  .search-wrap input { border: 0; background: transparent; color: #fff; font: inherit; outline: none; width: 100%; }
+  .search-wrap input::placeholder { color: rgba(255,255,255,.75); }
+
+  .mui-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 64px; height: 34px; padding: 0 16px; border-radius: 4px; font-size: 13px; font-family: inherit; text-transform: uppercase; letter-spacing: .4px; cursor: pointer; }
+  .btn-contained { background: var(--primary); border: 1px solid var(--primary); color: #fff; box-shadow: var(--shadow-1); }
+  .btn-text { background: transparent; border: 1px solid transparent; color: var(--primary); }
+  .btn-outlined { background: var(--paper); border: 1px solid var(--primary); color: var(--primary); }
+  .btn-disabled { background: rgba(0,0,0,.08); border: 1px solid transparent; color: rgba(0,0,0,.38); cursor: not-allowed; box-shadow: none; }
+  .mui-fab { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--secondary); color: #fff; font-size: 22px; cursor: pointer; box-shadow: var(--shadow-2); display: inline-flex; align-items: center; justify-content: center; }
+
+  .mui-input { font: inherit; color: var(--text-primary); border: 0; border-bottom: 1px solid var(--text-secondary); background: transparent; padding: 6px 0; outline: none; min-width: 220px; }
+  .mui-input:focus { border-bottom: 2px solid var(--primary); }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field label { font-size: 12px; color: var(--text-secondary); }
+
+  .mui-badge { position: relative; display: inline-flex; }
+  .mui-badge sup { position: absolute; top: -2px; right: -7px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--secondary); color: #fff; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); color: var(--primary-dark); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .stat-card { background: var(--paper); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; box-shadow: var(--shadow-1); }
+  .stat-card .stat-label { font-size: 13px; color: var(--text-secondary); }
+  .stat-card .stat-value { font-size: 28px; font-weight: 600; margin-top: 2px; }
+  .stat-card .stat-sub { font-size: 12px; color: var(--text-secondary); }
+
+  .mui-linear { height: 8px; border-radius: 4px; background: #E0E0E0; overflow: hidden; }
+  .mui-linear > i { display: block; height: 100%; background: var(--primary); }
+  .progress-row { display: grid; grid-template-columns: 92px 1fr 52px; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 13px; }
+
+  .list-item { display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--divider); }
+  .list-item:last-child { border-bottom: 0; }
+  .list-main { flex: 1; }
+  .list-title { font-size: 13px; font-weight: 600; }
+  .list-sub { font-size: 12px; color: var(--text-secondary); }
+
+  .mui-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .mui-tab { flex: 1; padding: 12px 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); cursor: pointer; font: inherit; }
+  .mui-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  .tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 11px; font-size: 12px; background: var(--divider); color: var(--text-primary); }
+  .tag-success { background: rgba(76,175,80,.12); color: var(--success); }
+  .tag-error { background: rgba(244,67,54,.12); color: var(--error); }
+  .tag-warning { background: rgba(255,152,0,.12); color: var(--warning); }
+  .tag-info { background: rgba(33,150,243,.12); color: var(--info); }
+
+  .demo-table { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .demo-table th, .demo-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--divider); font-size: 13px; }
+  .demo-table th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+
+  .dialog-mock { border: 1px solid var(--border); border-radius: 8px; background: var(--paper); box-shadow: var(--shadow-2); overflow: hidden; }
+  .dialog-mock .dialog-head { padding: 12px 16px; border-bottom: 1px solid var(--divider); font-weight: 600; display: flex; justify-content: space-between; }
+  .dialog-mock .dialog-body { padding: 16px; color: var(--text-secondary); }
+  .dialog-mock .dialog-foot { padding: 10px 16px; border-top: 1px solid var(--divider); display: flex; justify-content: flex-end; gap: 8px; }
+
+  .empty-state { text-align: center; padding: 36px; color: var(--text-secondary); }
+  .footer-note { text-align: center; padding: 22px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 20px; }
+  code { background: var(--divider); border-radius: 3px; padding: 0 4px; font-size: 12px; }
+  pre { background: #F5F5F5; border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-4 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo">B</div>
+  <div>
+    <h1>Boss Ultimate — 主题与组件证据预览</h1>
+    <p>基于 <a href="https://boss.ux-maestro.com/app">https://boss.ux-maestro.com/app</a> 运行时 DOM/JS 分析 · React + Redux + Material-UI · 默认主题 purpleRedTheme · 主色 #673AB7</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 1. Analysis evidence ===== -->
+  <section class="section">
+    <h2 class="section-title">分析证据</h2>
+    <div class="card">
+      <div class="grid-2">
+        <div>
+          <div class="card-title">来源与运行时</div>
+          <div class="small muted">
+            <div>HTML title：Boss Ultimate - React Admin Dashoard Template</div>
+            <div>运行时标题：Boss Ultimate - Personal Dashboard</div>
+            <div>产物：runtime / vendor / main 三个 webpack bundle</div>
+            <div>页面类型：SPA，CSS-in-JS（<code>&lt;style data-jss&gt;</code>）</div>
+          </div>
+        </div>
+        <div>
+          <div class="card-title">框架判定</div>
+          <div class="small muted">
+            <div>DOM 签名：<code>.MuiButton</code> / <code>.MuiAppBar</code> / <code>.MuiPaper</code> 等</div>
+            <div>JS 签名：<code>createTheme</code>、<code>MuiThemeProvider</code>、palette 配置</div>
+            <div>默认设置：<code>_o = { theme: "purpleRedTheme", type: "light", layout: "left-sidebar" }</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <pre>/* evidence: js=main.5cbb7443a26c09528c84.js */
+purpleRedTheme.palette.primary   = { light: "#EDE7F6", main: "#673AB7", dark: "#512DA8" }
+purpleRedTheme.palette.secondary = { light: "#FCE4EC", main: "#EC407A", dark: "#C2185B" }
+/* evidence: dom=runtime style & elements */
+page background #FAFAFA · paper #FFFFFF · MuiAppBar background primary #673AB7</pre>
+    </div>
+  </section>
+
+  <!-- ===== 2. Theme palette ===== -->
+  <section class="section">
+    <h2 class="section-title">主题色板</h2>
+    <div class="card">
+      <div class="palette-group-label">主色 / 次色 — purpleRedTheme palette</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#673AB7"></div><div class="swatch-info"><div class="swatch-name">primary.main</div><div class="swatch-hex">#673AB7</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#512DA8"></div><div class="swatch-info"><div class="swatch-name">primary.dark</div><div class="swatch-hex">#512DA8</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#EDE7F6"></div><div class="swatch-info"><div class="swatch-name">primary.light</div><div class="swatch-hex">#EDE7F6</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#EC407A"></div><div class="swatch-info"><div class="swatch-name">secondary.main</div><div class="swatch-hex">#EC407A</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#C2185B"></div><div class="swatch-info"><div class="swatch-name">secondary.dark</div><div class="swatch-hex">#C2185B</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#FCE4EC"></div><div class="swatch-info"><div class="swatch-name">secondary.light</div><div class="swatch-hex">#FCE4EC</div></div></div>
+      </div>
+      <div class="palette-group-label">页面与文字 — 运行时样式</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#FAFAFA"></div><div class="swatch-info"><div class="swatch-name">background.default</div><div class="swatch-hex">#FAFAFA</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#FFFFFF"></div><div class="swatch-info"><div class="swatch-name">paper</div><div class="swatch-hex">#FFFFFF</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#212121"></div><div class="swatch-info"><div class="swatch-name">text.primary</div><div class="swatch-hex">#212121</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#757575"></div><div class="swatch-info"><div class="swatch-name">text.secondary</div><div class="swatch-hex">#757575</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#9E9E9E"></div><div class="swatch-info"><div class="swatch-name">text.disabled</div><div class="swatch-hex">#9E9E9E</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#E0E0E0"></div><div class="swatch-info"><div class="swatch-name">divider / border</div><div class="swatch-hex">#E0E0E0</div></div></div>
+      </div>
+      <div class="palette-group-label">状态与功能色 — 运行时 style 中观测</div>
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color" style="background:#F44336"></div><div class="swatch-info"><div class="swatch-name">error</div><div class="swatch-hex">#F44336</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#4CAF50"></div><div class="swatch-info"><div class="swatch-name">success</div><div class="swatch-hex">#4CAF50</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#FF9800"></div><div class="swatch-info"><div class="swatch-name">warning</div><div class="swatch-hex">#FF9800</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#2196F3"></div><div class="swatch-info"><div class="swatch-name">info</div><div class="swatch-hex">#2196F3</div></div></div>
+        <div class="color-swatch"><div class="swatch-color" style="background:#FB8C00"></div><div class="swatch-info"><div class="swatch-name">orange accent</div><div class="swatch-hex">#FB8C00</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. Real components on /app ===== -->
+  <section class="section">
+    <h2 class="section-title">当前页面实际观测组件</h2>
+
+    <!-- evidence: dom=MuiAppBar/MuiToolbar/MuiIconButton/MuiBadge/MuiTextField -->
+    <div class="card">
+      <div class="card-title">AppBar / Toolbar / Search <span class="evidence-tag">DOM 实据</span></div>
+      <div class="mui-appbar">
+        <div class="mui-toolbar">
+          <button class="icon-btn" type="button" aria-label="Menu">☰</button>
+          <strong style="font-size:14px;">Boss Ultimate - Personal Dashboard</strong>
+          <div class="search-wrap">
+            <span style="opacity:.85;">⌕</span>
+            <input type="text" placeholder="Search UI" value="">
+          </div>
+          <span class="spacer"></span>
+          <button class="icon-btn" title="Full Screen">⛶</button>
+          <button class="icon-btn" title="Turn Dark/Light">◐</button>
+          <span class="mui-badge"><button class="icon-btn">🔔</button><sup>4</sup></span>
+          <span class="avatar" style="margin-left:4px;">J</span>
+        </div>
+      </div>
+      <div class="small muted" style="margin-top:8px;">Search placeholder 来自 DOM：<code>Search UI</code></div>
+    </div>
+
+    <!-- evidence: dom=MuiButton-containedPrimary label "Watch Video" "See Post" "Read Article" -->
+    <div class="card">
+      <div class="card-title">Button — Contained Primary <span class="evidence-tag">DOM 实据</span></div>
+      <div class="flex">
+        <button class="mui-btn btn-contained" type="button">▶ Watch Video</button>
+        <button class="mui-btn btn-contained" type="button">See Post</button>
+        <button class="mui-btn btn-contained" type="button">Read Article</button>
+        <button class="mui-btn btn-text" type="button">Text Button</button>
+      </div>
+      <div class="small muted" style="margin-top:8px;">按钮文字与 contained 形态来自 DOM；Text Button 为该框架内组件形态。</div>
+    </div>
+
+    <!-- evidence: dom=MuiFab-primary aria-label="toggle" -->
+    <div class="card">
+      <div class="card-title">FAB / Icon Button / Badge <span class="evidence-tag">DOM 实据</span></div>
+      <div class="flex">
+        <button class="mui-fab" type="button" aria-label="toggle">+</button>
+        <span class="mui-badge"><button class="icon-btn" style="border:1px solid var(--border);">🔔</button><sup>4</sup></span>
+        <span class="avatar">JD</span>
+      </div>
+      <div class="small muted" style="margin-top:8px;">Badge 数字 4 来自 DOM <code>MuiBadge-colorSecondary</code>。</div>
+    </div>
+
+    <!-- evidence: dom=stat labels and values -->
+    <div class="card">
+      <div class="card-title">Stat Cards <span class="evidence-tag">DOM 实据</span></div>
+      <div class="grid-4">
+        <div class="stat-card"><div class="stat-label">Subscribers</div><div class="stat-value">207</div><div class="stat-sub">newsletter</div></div>
+        <div class="stat-card"><div class="stat-label">Followers</div><div class="stat-value">300</div><div class="stat-sub">social media</div></div>
+        <div class="stat-card"><div class="stat-label">Total Posts</div><div class="stat-value">67</div><div class="stat-sub">published</div></div>
+        <div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value">70</div><div class="stat-sub">published</div></div>
+      </div>
+    </div>
+
+    <!-- evidence: dom=MuiLinearProgress role=progressbar aria-valuenow -->
+    <div class="card">
+      <div class="card-title">LinearProgress <span class="evidence-tag">DOM 实据</span></div>
+      <div class="progress-row"><span class="muted">Your Storage</span><div class="mui-linear"><i style="width:60%;"></i></div><span>60%</span></div>
+      <div class="progress-row"><span class="muted">Task</span><div class="mui-linear"><i style="width:100%;"></i></div><span>100</span></div>
+      <div class="progress-row"><span class="muted">Performance</span><div class="mui-linear"><i style="width:89%;"></i></div><span>89</span></div>
+      <div class="progress-row"><span class="muted">Performance</span><div class="mui-linear"><i style="width:78%;"></i></div><span>78</span></div>
+      <div class="small muted" style="margin-top:6px;">aria-valuenow 实测：100 / 24 / 89 / 78 / 55 / 80；Storage 60% 为页面可见文案。</div>
+    </div>
+
+    <!-- evidence: dom=MuiList/MuiListItem/MuiAvatar/MuiDivider -->
+    <div class="card">
+      <div class="card-title">List / Avatar / Activity <span class="evidence-tag">DOM 实据</span></div>
+      <div class="list-item">
+        <span class="avatar">JD</span>
+        <div class="list-main"><div class="list-title">James Doe</div><div class="list-sub">Administrator · Jim Doe System Engineer · Jane Doe Executive</div></div>
+      </div>
+      <div class="list-item">
+        <span class="avatar" style="background:var(--secondary-light);color:var(--secondary-dark);">JX</span>
+        <div class="list-main"><div class="list-title">Recent Activity</div><div class="list-sub">Jinx Doe Security · Jihan Doe Marketing · Johny Doe Actor</div></div>
+      </div>
+      <div class="small muted">样例成员名来自页面 Recent Activity / Team 区块。</div>
+    </div>
+
+    <!-- evidence: dom=MuiTabs root + 3 MuiTab (icon-only) -->
+    <div class="card">
+      <div class="card-title">Tabs <span class="evidence-tag">DOM 实据（icon-only）</span> <span class="fallback-tag">文案为模拟</span></div>
+      <div data-evidence="fallback" class="mui-tabs">
+        <button class="mui-tab active" type="button">Tab 1</button>
+        <button class="mui-tab" type="button">Tab 2</button>
+        <button class="mui-tab" type="button">Tab 3</button>
+      </div>
+      <div class="small muted" style="margin-top:8px;">页面中 3 个 Tab 仅含 SVG 图标、无文字；展示文案非页面原文。</div>
+    </div>
+
+  </section>
+
+  <!-- ===== 4. Fallback components ===== -->
+  <section class="section">
+    <h2 class="section-title">模拟组件（当前路由未观测到，仅用于演示布局）</h2>
+
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">表单输入 <span class="fallback-tag">模拟</span></div>
+      <div class="grid-2">
+        <div class="form-field"><label>Input</label><input class="mui-input" placeholder="文本输入（模拟）"></div>
+        <div class="form-field"><label>Select</label><select class="mui-input"><option>下拉选择（模拟）</option></select></div>
+      </div>
+    </div>
+
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">表格 <span class="fallback-tag">模拟</span></div>
+      <table class="demo-table">
+        <thead><tr><th>名称</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td>示例数据</td><td><span class="tag tag-info">模拟</span></td><td><a href="#">查看</a></td></tr>
+          <tr><td>示例数据</td><td><span class="tag tag-warning">模拟</span></td><td><a href="#">查看</a></td></tr>
+        </tbody>
+      </table>
+      <div class="small muted" style="margin-top:6px;">/app Personal Dashboard 未渲染 MUI Table，故标记模拟。</div>
+    </div>
+
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">对话框 <span class="fallback-tag">模拟</span></div>
+      <div class="dialog-mock">
+        <div class="dialog-head"><span>示例对话框</span><span>✕</span></div>
+        <div class="dialog-body">当前路由未出现 <code>MuiDialog</code>，此区为通用布局占位。</div>
+        <div class="dialog-foot"><button class="mui-btn btn-outlined">取消</button><button class="mui-btn btn-contained">确定</button></div>
+      </div>
+    </div>
+
+    <div class="card" data-evidence="fallback">
+      <div class="card-title">状态 Tag / Empty <span class="fallback-tag">模拟</span></div>
+      <div class="flex">
+        <span class="tag tag-success">成功</span>
+        <span class="tag tag-error">错误</span>
+        <span class="tag tag-warning">警告</span>
+        <span class="tag tag-info">信息</span>
+      </div>
+      <div class="empty-state">暂无数据（模拟空状态）</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer-note">
+  基于 https://boss.ux-maestro.com/app 运行时 DOM/JS 分析生成 · React + Redux + Material-UI · purpleRedTheme #673AB7 · 未在当前路由确认的组件均已标注“模拟”
+</div>
+
+</body>
+</html>

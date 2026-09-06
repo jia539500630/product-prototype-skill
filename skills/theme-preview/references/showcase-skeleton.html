@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品主题与组件展示（骨架）</title>
+<style>
+  /* ============================================================
+     NEUTRAL SKELETON — NOT A FINAL EXAMPLE
+     This layout and its neutral grays are documentation chrome.
+     The implementing agent must:
+       1) set :root values from real source evidence;
+       2) remove sections whose components were not detected;
+       3) replace placeholder copy with copy observed on the page.
+     ============================================================ */
+  :root {
+    /* Evidence tokens MUST be set before finishing.
+       Examples: --primary, --primary-dark, --primary-light,
+       --secondary, --page-bg, --text-primary, --text-secondary,
+       --border, --hover, --radius, --font-family.
+       Do not invent values; leave only values with source evidence. */
+    --page-bg: #fafafa;       /* neutral layout chrome */
+    --text-primary: #212121;  /* neutral layout chrome */
+    --text-secondary: #757575;/* neutral layout chrome */
+    --border: #e0e0e0;        /* neutral layout chrome */
+    --radius: 6px;
+    --font-family: "Roboto", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); font-size: 14px; color: var(--text-primary); background: var(--page-bg); line-height: 1.6; }
+
+  .page-header { background: #fff; border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; align-items: center; gap: 16px; }
+  .page-header .logo { width: 44px; height: 44px; border-radius: var(--radius); background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .page-header h1 { font-size: 20px; font-weight: 600; }
+  .page-header p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ""; width: 4px; height: 15px; background: var(--evidence-primary, #ccc); border-radius: 2px; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .flex { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+  /* Palette */
+  .color-palette { display: flex; flex-wrap: wrap; gap: 12px; }
+  .color-swatch { width: 110px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: #fff; }
+  .color-swatch .swatch-color { height: 52px; background: var(--evidence-primary, #eee); }
+  .color-swatch .swatch-info { padding: 7px; font-size: 11px; }
+  .color-swatch .swatch-name { font-weight: 600; }
+  .color-swatch .swatch-hex { color: var(--text-secondary); font-family: monospace; word-break: break-all; }
+
+  /* Generic controls */
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; font-size: 13px; cursor: pointer; }
+  .btn-primary { background: var(--evidence-primary, #666); border-color: var(--evidence-primary, #666); color: #fff; }
+  .form-demo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .form-item { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 13px; color: var(--text-secondary); }
+  .form-input, .form-select, .form-textarea { height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; background: #fff; outline: none; }
+  .form-textarea { height: 72px; padding: 8px 10px; resize: vertical; }
+
+  .tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 3px; font-size: 12px; background: #f5f5f5; border: 1px solid var(--border); color: var(--text-secondary); }
+  .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; font-size: 11px; color: #fff; background: #666; }
+
+  .demo-table { width: 100%; border: 1px solid var(--border); border-radius: 4px; border-collapse: collapse; background: #fff; }
+  .demo-table th, .demo-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .demo-table th { background: #fafafa; font-weight: 600; }
+
+  .status-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+  .status-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #999; }
+
+  .alert { padding: 9px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; margin-bottom: 8px; background: #fafafa; }
+  .progress-bar { height: 6px; border-radius: 3px; background: #eee; overflow: hidden; }
+  .progress-fill { height: 100%; width: 60%; border-radius: 3px; background: var(--evidence-primary, #999); }
+  .spinner { width: 22px; height: 22px; border: 3px solid #eee; border-top-color: var(--evidence-primary, #666); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .pagination { display: flex; gap: 6px; align-items: center; }
+  .page-btn { min-width: 28px; height: 28px; padding: 0 8px; border: 1px solid var(--border); border-radius: 4px; background: #fff; font-size: 13px; cursor: pointer; }
+  .page-btn.active { background: var(--evidence-primary, #666); border-color: var(--evidence-primary, #666); color: #fff; }
+
+  .breadcrumb { display: flex; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .breadcrumb a { color: var(--evidence-primary, #444); text-decoration: none; }
+  .stat-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+  .stat-card .stat-value { font-size: 26px; font-weight: 600; margin-top: 4px; }
+
+  .tree-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 13px; }
+  .tree-children { padding-left: 22px; }
+  .empty-state { text-align: center; padding: 36px; color: var(--text-secondary); }
+
+  .footer-note { text-align: center; padding: 22px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border); margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo">?</div>
+  <div>
+    <h1>产品主题与组件展示</h1>
+    <p>来源: <SOURCE_URL_OR_PATH> · 框架: <DETECTED_STACK> · 主色: <PRIMARY_TOKEN></p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Palette: keep swatches that have evidence; delete the rest -->
+  <section class="section">
+    <h2 class="section-title">主题色板</h2>
+    <div class="card">
+      <div class="color-palette">
+        <div class="color-swatch"><div class="swatch-color"></div><div class="swatch-info"><div class="swatch-name">primary</div><div class="swatch-hex">#SRC</div></div></div>
+        <div class="color-swatch"><div class="swatch-color"></div><div class="swatch-info"><div class="swatch-name">primary dark</div><div class="swatch-hex">#SRC</div></div></div>
+        <div class="color-swatch"><div class="swatch-color"></div><div class="swatch-info"><div class="swatch-name">primary light</div><div class="swatch-hex">#SRC</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Text & states -->
+  <section class="section">
+    <h2 class="section-title">文字与状态</h2>
+    <div class="card">
+      <div style="font-size: 13px; color: var(--text-secondary);">正文 / 次要文字 / 标签占位 / 主题强调</div>
+    </div>
+  </section>
+
+  <!-- Buttons: include only styles present in source -->
+  <section class="section">
+    <h2 class="section-title">按钮</h2>
+    <div class="card">
+      <div class="flex">
+        <button class="btn btn-primary">主要操作</button>
+        <button class="btn">次要操作</button>
+        <button class="btn" disabled>禁用</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forms -->
+  <section class="section">
+    <h2 class="section-title">表单组件</h2>
+    <div class="card">
+      <div class="form-demo">
+        <div class="form-item"><label class="form-label">输入框</label><input class="form-input" placeholder="请输入"></div>
+        <div class="form-item"><label class="form-label">下拉选择</label><select class="form-select"><option>请选择</option></select></div>
+        <div class="form-item"><label class="form-label">多行文本</label><textarea class="form-textarea" placeholder="请输入"></textarea></div>
+        <div class="form-item"><label class="form-label">日期</label><input class="form-input" type="date"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tags / badges / status -->
+  <section class="section">
+    <h2 class="section-title">标签、徽章与状态</h2>
+    <div class="card">
+      <div class="flex">
+        <span class="tag">状态标签</span>
+        <span class="badge">3</span>
+        <span class="status-dot">进行中</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section class="section">
+    <h2 class="section-title">表格</h2>
+    <div class="card">
+      <table class="demo-table">
+        <thead><tr><th>列 A</th><th>列 B</th><th>状态</th></tr></thead>
+        <tbody>
+          <tr><td>示例数据</td><td>示例数据</td><td><span class="tag">进行中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Feedback / dialogs / tabs / progress / loading / stats / pagination / nav / empty -->
+  <section class="section">
+    <h2 class="section-title">其他组件分区</h2>
+    <div class="card">
+      <div class="alert">提示反馈示例</div>
+      <div class="flex">
+        <div class="spinner"></div>
+        <div class="progress-bar" style="width: 180px;"><div class="progress-fill"></div></div>
+      </div>
+    </div>
+    <div class="grid-4">
+      <div class="stat-card"><div>指标名</div><div class="stat-value">0</div></div>
+    </div>
+    <div class="card">
+      <div class="pagination">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="breadcrumb"><a href="#">首页</a><span>/</span><span>当前页</span></div>
+    </div>
+  </section>
+
+  <!-- Empty -->
+  <section class="section">
+    <h2 class="section-title">空状态</h2>
+    <div class="card"><div class="empty-state">暂无数据</div></div>
+  </section>
+
+</div>
+
+<div class="footer-note">
+  基于 <SOURCE_URL_OR_PATH> 分析生成 · 框架: <DETECTED_STACK> · 主色: <PRIMARY_TOKEN> · 未确认项: <FALLBACK_NOTE>
+</div>
+
+</body>
+</html>
