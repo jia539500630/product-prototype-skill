@@ -18,6 +18,8 @@ If multiple frameworks appear (e.g. custom CSS plus one library), show what is a
 
 ## Component evidence mapping
 
+**Discovery is not this table.** Cluster DOM/CSS/JS first (`references/component-discovery.md`). Use the rows below only to *label* a cluster that already exists. Unlisted shapes still get a showcase section under the observed root class.
+
 Look for these markers in rendered DOM, HTML, CSS selectors, or JS component names. Framework prefix names are examples; record whichever class prefix the source really uses.
 
 | Component category | CSS/class examples | DOM hints | JS/bundle hints |
@@ -38,6 +40,27 @@ Look for these markers in rendered DOM, HTML, CSS selectors, or JS component nam
 | Breadcrumb | `.el-breadcrumb`, `.ant-breadcrumb`, `.MuiBreadcrumbs` | path-style navigation | `Breadcrumb`, `Breadcrumbs` |
 | Card / stat card | `.el-card`, `.ant-card`, `.MuiCard` | repeated label+value boxes | `Card`, `Statistic` |
 | Empty state | `.el-empty`, `.ant-empty`, `.Mui*` empty placeholder | empty message with illustration | `Empty` |
+| Tree / org tree / file tree | `.el-tree`, `.ant-tree`, `.MuiTreeView`, `*-tree`, `*-tree-node` | nested lists, indent, expand arrows, connectors | `Tree`, `TreeView`, `OrgTree` |
+| Dialog / modal **variants** | `.el-dialog`, `.ant-modal`, `.MuiDialog`, `*-dialog`, `*-modal` | `role="dialog"`, overlay, header/body/footer | `Dialog`, `Modal`, `MessageBox` |
+| Drawer | `.el-drawer`, `.ant-drawer`, `.MuiDrawer` | side panel overlay | `Drawer` |
+| Steps | `.el-steps`, `.ant-steps`, `.MuiStepper` | numbered horizontal/vertical steps | `Steps`, `Stepper` |
+| Date / range picker | `.el-date-picker`, `.ant-picker`, `.MuiDatePicker` | calendar popup classes | `DatePicker`, `RangePicker` |
+| Transfer / cascader | `.el-transfer`, `.el-cascader`, `.ant-transfer`, `.ant-cascader` | dual lists / cascading menus | `Transfer`, `Cascader` |
+| Upload | `.el-upload`, `.ant-upload`, `.MuiDropzone` | dropzone / file list | `Upload` |
+| Descriptions / form layout | `.el-descriptions`, `.ant-descriptions` | label-value grid | `Descriptions` |
+| Timeline | `.el-timeline`, `.ant-timeline` | vertical nodes | `Timeline` |
+| Nav / menu / sider | `.el-menu`, `.ant-menu`, `.MuiDrawer`, `*-sider`, `*-nav` | sidebar lists | `Menu`, `Sider` |
+
+### Overrides and wraps (after discovery)
+
+Library prefix ≠ product chrome. After a cluster is promoted:
+
+1. If the product overrides library internals (header gradient, footer `justify-content`, node indent), copy those properties into the demo.
+2. Wrapped widgets (`BizDialog` around `.el-dialog`): demo the wrapper slots, not a bare library widget.
+3. Capture states that exist in CSS/DOM: hover, selected, disabled, open, loading, empty.
+4. Never omit a high-count or slot-shaped custom prefix because it is missing from the table. Title the section with the observed name.
+
+If only a class name is known and no layout CSS/DOM was found, show a minimal demo with `data-evidence="source-class-only"`.
 
 ## Theme extraction recipes
 

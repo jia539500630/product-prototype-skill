@@ -51,12 +51,35 @@ Do not use when the user wants to build a new app, redesign from scratch, or pro
 - Also record layout conventions when discoverable: radius, font family, input height, padding, border, shadow, page background.
 - If a common role has no evidence (e.g. no warning color found), omit it or show it under "未找到证据" rather than choosing a color.
 
-### 4. Detect components and domain
+### 4. Discover components (structure first)
 
-- Component evidence can come from: rendered DOM (element types, class names, visible states), CSS selectors, or JS component names.
-- Show components only when evidence maps to a recognizable category (button, form, table, tag, dialog, tabs, progress, pagination, etc.). Use `references/framework-signatures.md` for the framework-specific mapping.
-- If common components cannot be confirmed, add them as clearly labeled fallback demos instead of claiming they exist in the product.
-- Sample content must use vocabulary observed on the page or artifact (menus, form labels, table columns). When none can be derived, use neutral admin copy: 用户/任务/团队/数据/设置. Never default to a single business (medical, e-commerce, etc.).
+Do **not** start from a fixed list (Button, Dialog, Tree, …). Discover reusable blocks from DOM/CSS/JS, then optionally map them to a known kind. Two products on the same library will yield different inventories and different inner layouts; unknown product widgets still belong in the showcase.
+
+Follow `references/component-discovery.md` in full. Summary:
+
+**4a. Cluster**
+
+- Runtime DOM: repeated isomorphic subtrees, slot-shaped children (header/body/footer, list/item, label/control), landmark roles, overlay+panel.
+- CSS: group selectors by shared root prefix (BEM / `el-dialog__*` / product `foo-bar`). A prefix with 3+ related rules or hover/selected states is a candidate.
+- JS: registered/exported symbols that match a CSS or DOM root.
+- SPA first paint is incomplete — still take CSS/JS-only prefixes.
+
+**4b. Promote when ≥2 signals fire** (repeat, slots, dedicated CSS, role, overlay, JS name). Skip utility classes and one-off page chrome.
+
+**4c. Name**
+
+- Library table match → use that kind, keep the local class/symbol.
+- Else use the observed class or JS name.
+- Else a structure label (“overlay + header/body/footer”, “nested indent + caret”). Never drop a cluster because it is not in the table.
+
+**4d. Capture and rebuild**
+
+For every promoted block record root, slot order/alignment, repeating child template, tokens, states, evidence grade (`dom` / `css-prefix` / `js-name` / `structure-inferred`). Rebuild the demo from that capture — not from a stock library mock or the skeleton’s placeholder widgets.
+
+**4e. Copy and fallbacks**
+
+- Library widgets that never appeared may be added only as `data-evidence="fallback"`.
+- Sample copy comes from the page/artifact. If none, use 用户/任务/团队/数据/设置. Never default a business domain.
 
 ### 5. Generate the showcase
 
@@ -84,6 +107,10 @@ Do not use when the user wants to build a new app, redesign from scratch, or pro
 - Using fixed business copy (医疗/电商/后台) for every product.
 - Leaving hardcoded colors outside `:root` CSS variables.
 - Claiming a component exists when only a framework signature or a generic fallback was used.
+- Starting from the library category table and only demoing rows that match it.
+- Dropping a repeating DOM/CSS cluster because it has no standard name (filter bar, entity header, Gantt row, …).
+- Rebuilding a discovered block as a stock library widget instead of the captured slots/tokens.
+- Analyzing only the first URL dump and ignoring prefixes that appear only in CSS/JS chunks.
 
 ## Red Flags — Stop and Re-check Evidence
 
