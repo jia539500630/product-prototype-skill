@@ -1,0 +1,17 @@
+<h2>选择主题预览的组织方式</h2>
+<p class="subtitle">三种方式都会保留主题、组件、排版和证据；区别在于后续作为项目原型约束时的可读性与自动化程度。</p>
+
+<div class="cards">
+  <div class="card" data-choice="catalog" onclick="toggleSelect(this)">
+    <div class="card-image"><div class="mockup"><div class="mockup-header">A · 组件目录</div><div class="mockup-body"><div class="placeholder">主题色板</div><div class="placeholder">已观测组件</div><div class="placeholder">推断组件</div><div class="placeholder">布局规则</div></div></div></div>
+    <div class="card-body"><h3>组件目录优先</h3><p>线性、易浏览；机器约束作为页尾 JSON。适合人工参考，但“组件—证据—布局”关联较分散。</p></div>
+  </div>
+  <div class="card" data-choice="contract" onclick="toggleSelect(this)">
+    <div class="card-image"><div class="mockup"><div class="mockup-header">B · 原型契约（推荐）</div><div class="mockup-body" style="display:flex;gap:8px"><div class="mock-sidebar">主题<br>排版<br>组件<br>证据</div><div class="mock-content"><div class="placeholder">主题与密度</div><div class="placeholder">组件矩阵：观测 / 推断</div><div class="placeholder">页面布局样板</div><div class="placeholder">内嵌 contract JSON</div></div></div></div></div>
+    <div class="card-body"><h3>契约优先</h3><p>展示与 JSON 使用同一份证据清单；最适合作为后续原型构建的约束基线。</p></div>
+  </div>
+  <div class="card" data-choice="screens" onclick="toggleSelect(this)">
+    <div class="card-image"><div class="mockup"><div class="mockup-header">C · 页面样板优先</div><div class="mockup-body"><div class="placeholder">列表页样板</div><div class="placeholder">详情页样板</div><div class="placeholder">表单页样板</div></div></div></div>
+    <div class="card-body"><h3>页面样板优先</h3><p>最接近可见原型，但会把未在来源中证实的页面组合带入设计，边界较松。</p></div>
+  </div>
+</div>

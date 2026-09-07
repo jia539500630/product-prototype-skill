@@ -31,9 +31,42 @@ Do not use when the user wants to build a new app, redesign from scratch, or pro
 4. Anything built without real evidence must be marked **fallback**. Use `data-evidence="fallback"` on those sections and say "模拟/未在产物中确认" in the visible label. Never present fallback styling as the product's real style.
 5. The output stays one self-contained static HTML file. No framework, build step, or real interactivity.
 
+## High-Fidelity Reference Gate
+
+When the user supplies or explicitly authorizes a high-fidelity reference HTML,
+CSS, screenshot, or rendered route, treat that material as a second source of
+truth for visual implementation.
+
+- **High-fidelity reference:** inspect its complete DOM pattern, stylesheet
+  declarations, and rendered/computed styles when available. Record its path
+  alongside the target artifact in the contract.
+- **Do not synthesize** a visually similar control from theme tokens, framework
+  familiarity, or class names. For every component claimed as high fidelity,
+  copy the exact DOM structure and CSS geometry from the authorized reference,
+  including nested slots, control elements, borders, padding, radius, and
+  state selectors.
+- A CSS prefix, source-map string, or static selector can establish an
+  `inferred` component, but can never establish a high-fidelity component.
+  Without a complete DOM pattern or computed-style capture, render it only in
+  the inferred section or omit it.
+- If the reference is a shared theme document rather than the target's runtime,
+  call its styling **reference fidelity**, not target runtime fidelity. Do not
+  claim pixel fidelity to the target route.
+- For a standalone preview, inline the authorized reference CSS actually used
+  by the page. Do not leave external CSS, fonts, scripts, or runtime UI
+  libraries as dependencies.
+
 ## Prototype Contract
 
 Read `references/contract-schema.md`. Every extracted item is `source` (DOM/computed or explicit token), `inferred` (CSS/JS-supported but not runtime-observed), `fallback` (needed for baseline completeness), or `chrome` (neutral documentation shell). Render inferred components in their own section with a visible `推断` label; never call them observed. Embed the contract in `script#theme-contract[type="application/json"]`, but do not render its JSON.
+
+## System Composition Reasoning
+
+Read `references/system-composition.md` before component rendering. Identify an application shell, page patterns, composite business components, and primitives from the whole artifact; framework signatures only support this inference. Build the showcase around the discovered composition graph and its parent/child relationships, not a library category checklist. Include a coverage summary for all four levels and say `未找到证据` where a level cannot be established.
+
+## Prototype Theme Minimum Coverage
+
+The preview is a project-prototype baseline, not a terse analysis report. At minimum, when evidence supports it, show the full stateful inventory: button variants and disabled state; status tags; input/select/date controls; radio/checkbox/switch; validation; toolbar and tabs; filter area; data table with selection/operations; pagination; cards; alert/loading/empty states; dialog/drawer/popover layers. Rebuild controls from the target system's tokens and CSS geometry, not a framework default. Then add target-specific composites and at least three complete workspaces (list, detail/edit, and review/process) when route/component evidence permits. This minimum is comparable to a complete “HTML Prototype Theme” page; system-specific coverage must extend it.
 
 ## Workflow
 
@@ -88,6 +121,9 @@ For every promoted block record root, slot order/alignment, repeating child temp
 ### 5. Generate the showcase
 
 - Build one static HTML using the neutral layout from `references/showcase-skeleton.html`, replacing every placeholder with extracted evidence values.
+- When an authorized high-fidelity reference exists, replace the relevant
+  neutral component markup with its exact DOM structure and inline its
+  stylesheet rules. Do not make a parallel hand-authored component system.
 - Palette and component sections must carry provenance for review. Add an HTML comment such as `<!-- evidence: css:primary-main=#673AB7 -->` or `data-evidence` attributes.
 - The page must not claim a framework, component, or palette it did not detect. The footer states: source URL/path, detected stack, primary/main color, and any fallback/missing evidence.
 
@@ -96,6 +132,11 @@ For every promoted block record root, slot order/alignment, repeating child temp
 - Every source/inferred hex or gradient shown appears in collected evidence; explicit `chrome` tokens are exempt.
 - No leftover text, colors, or component names from previous examples appear in the output.
 - The HTML opens standalone and renders without network dependencies (the optional Element-UI link from the old template must not be copied).
+- For every high-fidelity reference component, compare the generated DOM
+  against the complete DOM pattern and verify its required CSS selectors and
+  token values are present. When browser access is available, verify the
+  representative reference and preview at the same viewport using computed
+  style for at least one instance of each component family.
 - Use a linear page with no sidebar: summary, theme/typography, observed components, inferred components, layout specimens, optional fallbacks, limitations. A composition not directly observed visibly says `原型组合推断`.
 - Do not submit credentials, bypass access control, or traverse unrelated routes. If rendering is unavailable, record the source-only limitation in the contract and footer.
 
