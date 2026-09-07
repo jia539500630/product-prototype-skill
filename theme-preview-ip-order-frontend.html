@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ip-order-frontend 主题与组件预览</title>
+  <style>
+    :root {
+      /* evidence: dist/css/chunk-element-plus.2315773b.css */
+      --ip-primary: #079c66;
+      --ip-primary-dark: #067d52;
+      --ip-primary-light-3: #51ba94;
+      --ip-primary-light-5: #83ceb3;
+      --ip-primary-light-8: #cdebe0;
+      --ip-primary-light-9: #e6f5f0;
+      --ip-table-deep: #005226;
+      --ip-table-border: #a2d1cc;
+      --ip-table-header: linear-gradient(180deg, #fafefd, #e5f9f6);
+      --ip-current-row: #ebfff8;
+      --ip-blue: #409eff;
+      --ip-blue-bg: #ecf5ff;
+      --ip-warning: #e6a23c;
+      --ip-warning-strong: #ffa000;
+      --ip-warning-bg: #fff6e6;
+      --ip-danger: #f56c6c;
+      --ip-danger-strong: #fe5353;
+      --ip-danger-bg: #ffeded;
+      --ip-text: #303133;
+      --ip-text-regular: #606266;
+      --ip-text-muted: #909399;
+      --ip-border: #dcdfe6;
+      --ip-border-light: #e4e7ed;
+      --ip-fill: #f0f2f5;
+      --ip-fill-light: #f5f7fa;
+      --ip-page: #f2f3f5;
+      --ip-surface: #fff;
+      --ip-radius: 4px;
+      --ip-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+      --ip-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      --chrome-page: #f7f9f8;
+      --chrome-text: #1f2937;
+      --chrome-muted: #667085;
+      --chrome-border: #d9dfdc;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ip-text); background: var(--chrome-page); font: 14px/1.5 var(--ip-font); }
+    button, input { font: inherit; }
+    .page-header { border-bottom: 1px solid var(--chrome-border); background: #fff; }
+    .header-inner, main, .footer-inner { width: min(1280px, calc(100% - 40px)); margin: auto; }
+    .header-inner { padding: 26px 0 22px; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { color: var(--ip-table-deep); font-size: 25px; font-weight: 600; }
+    .subtitle { margin-top: 6px; color: var(--chrome-muted); }
+    main { padding: 26px 0 36px; }
+    .section { margin-bottom: 28px; }
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    h2 { color: var(--chrome-text); font-size: 17px; font-weight: 600; }
+    h3 { color: var(--ip-text); font-size: 14px; font-weight: 600; }
+    .evidence { display: inline-flex; align-items: center; width: fit-content; padding: 2px 7px; border: 1px solid var(--chrome-border); border-radius: 2px; color: var(--chrome-muted); background: #fff; font-size: 12px; line-height: 18px; white-space: nowrap; }
+    [data-evidence="source"] .evidence { color: var(--ip-primary-dark); border-color: var(--ip-primary-light-5); background: var(--ip-primary-light-9); }
+    [data-evidence="inferred"] .evidence { color: #765b18; border-color: #e5c677; background: #fff9e9; }
+    [data-evidence="fallback"] .evidence { color: var(--chrome-muted); background: #f5f6f6; }
+    .docs-card { border: 1px solid var(--chrome-border); background: #fff; border-radius: 6px; padding: 18px; }
+    .summary { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 1px; overflow: hidden; padding: 0; background: var(--chrome-border); }
+    .summary-item { min-height: 110px; padding: 18px; background: #fff; }
+    .summary-item b { display: block; margin-top: 7px; color: var(--ip-table-deep); font-size: 18px; font-weight: 600; }
+    .summary-item span { color: var(--chrome-muted); font-size: 12px; }
+    .token-grid, .component-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .token { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px; border: 1px solid var(--chrome-border); background: #fff; }
+    .swatch { width: 30px; height: 30px; flex: 0 0 auto; border: 1px solid rgba(0, 0, 0, .08); border-radius: 4px; }
+    .token b, .token span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .token b { font-size: 12px; font-weight: 500; }
+    .token span { color: var(--chrome-muted); font-size: 12px; }
+    .type-row { display: grid; grid-template-columns: 170px 1fr; gap: 20px; align-items: center; }
+    .type-sample { color: var(--ip-text); font-size: 14px; line-height: 24px; }
+    .type-meta { color: var(--chrome-muted); font-size: 12px; }
+    .component { min-width: 0; border: 1px solid var(--chrome-border); background: #fff; }
+    .component-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--chrome-border); }
+    .component-body { min-height: 96px; padding: 15px 12px; }
+    .showcase-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .ip-button { height: 32px; padding: 0 15px; border: 1px solid var(--ip-border); border-radius: var(--ip-radius); color: var(--ip-text-regular); background: #fff; font-weight: 500; cursor: default; }
+    .ip-button.primary { color: #fff; border-color: var(--ip-primary); background: var(--ip-primary); }
+    .ip-button.plain { color: var(--ip-primary); border-color: var(--ip-primary-light-5); background: var(--ip-primary-light-9); }
+    .ip-button.disabled { color: #fff; border-color: var(--ip-primary-light-5); background: var(--ip-primary-light-5); }
+    .ip-button.round { border-radius: 20px; }
+    .ip-control { position: relative; display: inline-flex; align-items: center; width: 170px; height: 32px; padding: 0 10px; border: 1px solid var(--ip-border); border-radius: var(--ip-radius); color: var(--ip-text); background: #fff; }
+    .ip-control.placeholder { color: #a8abb2; }
+    .ip-control .suffix { margin-left: auto; color: var(--ip-text-muted); }
+    .ip-control.focus { border-color: var(--ip-primary); box-shadow: 0 0 0 1px var(--ip-primary) inset; }
+    .ip-check { display: inline-flex; align-items: center; gap: 6px; color: var(--ip-text-regular); }
+    .box, .radio { display: inline-grid; place-items: center; width: 14px; height: 14px; border: 1px solid var(--ip-border); background: #fff; }
+    .box { border-radius: 2px; }
+    .box.checked { color: #fff; border-color: var(--ip-primary); background: var(--ip-primary); font-size: 11px; }
+    .radio { border-radius: 50%; }
+    .radio.checked::after { width: 6px; height: 6px; border-radius: 50%; background: var(--ip-primary); content: ""; }
+    .switch { position: relative; width: 40px; height: 20px; border-radius: 10px; background: var(--ip-primary); }
+    .switch::after { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; content: ""; }
+    .tag { display: inline-flex; align-items: center; height: 24px; padding: 0 15px; border-radius: 20px; white-space: nowrap; }
+    .tag.input { color: var(--ip-primary); background: var(--ip-primary-light-9); }
+    .tag.review { color: var(--ip-warning-strong); background: var(--ip-warning-bg); }
+    .tag.reject { color: var(--ip-danger-strong); background: var(--ip-danger-bg); }
+    .tag.blue { color: var(--ip-blue); background: var(--ip-blue-bg); }
+    .error-text { color: var(--ip-danger); font-size: 12px; }
+    .tabs { display: flex; border-bottom: 1px solid var(--ip-table-border); background: var(--ip-table-header); }
+    .tab { padding: 9px 16px; border-right: 1px solid var(--ip-table-border); color: var(--ip-text-regular); }
+    .tab.active { color: var(--ip-primary); background: #fff; font-weight: 500; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 16px; padding: 14px; border-bottom: 1px dashed #dcdcdc; }
+    .form-item { display: grid; gap: 4px; }
+    .form-item label { color: var(--ip-text); font-size: 13px; }
+    .toolbar-actions { display: flex; gap: 8px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 700px; border-collapse: collapse; }
+    th { height: 32px; padding: 0 8px; border: 1px solid var(--ip-table-border); color: var(--ip-table-deep); background: var(--ip-table-header); font-weight: 400; text-align: center; white-space: nowrap; }
+    td { height: 32px; padding: 0 8px; border: 1px solid #e8eaec; color: #000; text-align: center; white-space: nowrap; }
+    tr.current td { background: var(--ip-current-row); }
+    .text-link { color: var(--ip-primary); }
+    .text-danger { color: var(--ip-danger-strong); }
+    .pagination { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-top: 14px; color: var(--ip-text-regular); }
+    .pager { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 2px; background: var(--ip-fill); font-size: 12px; }
+    .pager.active { color: #fff; background: var(--ip-primary); }
+    .card-section { overflow: hidden; border: 1px solid var(--ip-table-border); }
+    .card-section-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px; color: var(--ip-table-deep); background: var(--ip-table-header); font-weight: 700; }
+    .card-section-header::before { width: 4px; height: 16px; border-radius: 100px; background: var(--ip-primary); content: ""; }
+    .card-section-body { padding: 16px; background: #fff; }
+    .workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .72fr); gap: 14px; }
+    .detail-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
+    .detail-item { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .detail-item b { width: 70px; flex: 0 0 auto; color: var(--ip-text-regular); font-weight: 400; text-align: right; }
+    .detail-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .side-panel { overflow: hidden; border-radius: 4px; background: #fff; box-shadow: var(--ip-shadow); }
+    .side-panel-title { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--ip-border); }
+    .side-panel-title b { font-size: 14px; }
+    .record { display: grid; grid-template-columns: 8px 1fr auto; gap: 8px; align-items: start; padding: 11px 12px; border-bottom: 1px solid var(--ip-border-light); }
+    .dot { width: 6px; height: 6px; margin-top: 6px; border-radius: 50%; background: var(--ip-primary); }
+    .record strong, .record small { display: block; }
+    .record strong { font-size: 13px; font-weight: 500; }
+    .record small { color: var(--ip-text-muted); font-size: 12px; }
+    .modal-demo { position: relative; min-height: 230px; padding: 22px; background: rgba(0, 0, 0, .5); }
+    .modal { width: min(420px, 100%); margin: auto; border-radius: 8px; background: #fff; box-shadow: 0 12px 32px 4px rgba(0, 0, 0, .04), 0 8px 20px rgba(0, 0, 0, .08); }
+    .modal header { padding: 20px 20px 10px; border-bottom: 1px solid #e5e5e5; color: #000; font-size: 16px; font-weight: 700; }
+    .modal main { width: auto; padding: 16px 20px; color: var(--ip-text-regular); }
+    .modal footer { display: flex; justify-content: center; gap: 12px; padding: 10px 20px 20px; }
+    .fallback { color: var(--chrome-muted); background: #fafbfb; }
+    .limitations { color: var(--chrome-muted); font-size: 13px; }
+    footer { border-top: 1px solid var(--chrome-border); background: #fff; }
+    .footer-inner { padding: 16px 0 22px; color: var(--chrome-muted); font-size: 12px; }
+    @media (max-width: 900px) {
+      .summary, .token-grid, .component-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .workspace-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .header-inner, main, .footer-inner { width: min(100% - 24px, 1280px); }
+      .summary, .token-grid, .component-grid, .detail-list { grid-template-columns: 1fr; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .type-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-inner">
+      <h1>ip-order-frontend 主题与组件预览</h1>
+      <p class="subtitle">基于 <code>/Users/li/byway/ip-order-frontend/dist</code> 分析 · Vue 3 + Element Plus 命名空间主题 + VXE Table</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" data-contract-id="source-summary" data-evidence="source">
+      <div class="section-heading"><h2>分析摘要</h2><span class="evidence">已观测 · 构建入口、CSS、JS 与 source map</span></div>
+      <div class="docs-card summary">
+        <div class="summary-item"><span>产品识别</span><b>住院医嘱与病历工作台</b><span>来自 `view-order-template`、`view-record-review`、`view-in-hospital-patient` chunk 名称与业务文本</span></div>
+        <div class="summary-item"><span>应用壳</span><b>SPA 工作区</b><span>Vue 运行时 + 异步路由 chunk</span></div>
+        <div class="summary-item"><span>主控件</span><b>ip-model / Element Plus</b><span>Element Plus CSS 被编译为 `ip-model-*`</span></div>
+        <div class="summary-item"><span>数据密集区</span><b>VXE Table</b><span>专用 table、pager、toolbar 与 form 样式</span></div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="theme-tokens" data-evidence="source">
+      <div class="section-heading"><h2>主题与排版</h2><span class="evidence">已观测 · CSS 变量 / :export</span></div>
+      <div class="docs-card">
+        <div class="token-grid">
+          <div class="token"><i class="swatch" style="background:#079c66"></i><div><b>--ip-model-color-primary</b><span>#079c66</span></div></div>
+          <div class="token"><i class="swatch" style="background:#005226"></i><div><b>mainColorDeepBg</b><span>#005226</span></div></div>
+          <div class="token"><i class="swatch" style="background:#e6f5f0"></i><div><b>primary-light-9</b><span>#e6f5f0</span></div></div>
+          <div class="token"><i class="swatch" style="background:linear-gradient(180deg,#fafefd,#e5f9f6)"></i><div><b>tableTopBackground</b><span>渐变表头</span></div></div>
+          <div class="token"><i class="swatch" style="background:#a2d1cc"></i><div><b>tableBorderColor</b><span>#a2d1cc</span></div></div>
+          <div class="token"><i class="swatch" style="background:#ebfff8"></i><div><b>mainColorBg</b><span>#ebfff8</span></div></div>
+          <div class="token"><i class="swatch" style="background:#ffa000"></i><div><b>审核警示</b><span>#ffa000</span></div></div>
+          <div class="token"><i class="swatch" style="background:#fe5353"></i><div><b>驳回 / 错误</b><span>#fe5353</span></div></div>
+        </div>
+        <div class="type-row" style="margin-top:18px">
+          <div class="type-sample">住院医嘱与病历工作台</div>
+          <div class="type-meta">14px 基础字号，`Helvetica Neue`、`PingFang SC`、`Microsoft YaHei` 字体栈；标准控件高度 32px，基础圆角 4px，小圆角 2px。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="observed-primitives" data-evidence="source">
+      <div class="section-heading"><h2>已观测基础组件</h2><span class="evidence">已观测 · CSS 前缀与 Vue 组件调用</span></div>
+      <div class="component-grid">
+        <article class="component"><div class="component-head"><h3>ip-model-button</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="showcase-row"><button class="ip-button">默认</button><button class="ip-button primary">查询</button><button class="ip-button plain">新增</button><button class="ip-button disabled" disabled>禁用</button></div></div></article>
+        <article class="component"><div class="component-head"><h3>输入与选择</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="showcase-row"><span class="ip-control placeholder">请输入模板名称</span><span class="ip-control focus">医嘱模板 <b class="suffix">⌄</b></span></div></div></article>
+        <article class="component"><div class="component-head"><h3>选择控件</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="showcase-row"><span class="ip-check"><i class="box checked">✓</i>已启用</span><span class="ip-check"><i class="radio checked"></i>个人</span><span class="switch" aria-label="开关"></span></div></div></article>
+        <article class="component"><div class="component-head"><h3>记录状态</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="showcase-row"><span class="tag input">录入</span><span class="tag review">审核中</span><span class="tag reject">驳回</span><span class="tag blue">住院</span></div></div></article>
+        <article class="component"><div class="component-head"><h3>表单校验</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="form-item"><label>模板名称</label><span class="ip-control" style="border-color:#f56c6c">请输入内容</span><span class="error-text">请输入模板名称</span></div></div></article>
+        <article class="component"><div class="component-head"><h3>分页</h3><span class="evidence">已观测</span></div><div class="component-body"><div class="showcase-row"><span>共 43 条</span><span class="pager">‹</span><span class="pager active">1</span><span class="pager">2</span><span class="pager">3</span><span class="pager">›</span></div></div></article>
+        <article class="component"><div class="component-head"><h3>Tabs</h3><span class="evidence">已观测</span></div><div class="component-body" style="padding:0"><div class="tabs"><span class="tab active">医嘱</span><span class="tab">草药</span><span class="tab">处方</span><span class="tab">检查</span></div></div></article>
+        <article class="component"><div class="component-head"><h3>反馈与空态</h3><span class="evidence">推断</span></div><div class="component-body"><div class="fallback" data-evidence="fallback" style="padding:14px;text-align:center">模拟 / 未在产物中确认的完整空态结构</div></div></article>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="order-template-list" data-evidence="source">
+      <div class="section-heading"><h2>工作区一：医嘱模板列表</h2><span class="evidence">已观测 · `view-order-template.c6882f7f.js`</span></div>
+      <div class="docs-card" style="padding:0;overflow:hidden">
+        <div class="tabs"><span class="tab active">医嘱</span><span class="tab">草药</span><span class="tab">处方</span><span class="tab">检查</span><span class="tab">检验</span></div>
+        <div class="toolbar">
+          <div class="form-item"><label>模板</label><span class="ip-control placeholder">请输入模板名称</span></div>
+          <div class="toolbar-actions"><button class="ip-button primary">查询</button><button class="ip-button primary">添加</button><button class="ip-button primary">模板分类管理</button></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>序号</th><th>模板类型</th><th>所属个人</th><th>模板名称</th><th>分类名称</th><th>首拼码</th><th>操作人</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr class="current"><td>1</td><td>个人</td><td>王医生</td><td>术后常规医嘱</td><td>长期医嘱</td><td>SHCGYZ</td><td>王医生</td><td><span class="text-link">修改</span>　<span class="text-danger">删除</span></td></tr>
+              <tr><td>2</td><td>个人</td><td>王医生</td><td>住院入院宣教</td><td>护理</td><td>ZYRYXJ</td><td>王医生</td><td><span class="text-link">修改</span>　<span class="text-danger">删除</span></td></tr>
+              <tr><td>3</td><td>个人</td><td>王医生</td><td>检验申请单</td><td>检查检验</td><td>JYSQD</td><td>王医生</td><td><span class="text-link">修改</span>　<span class="text-danger">删除</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination"><span>共 43 条</span><span class="pager">‹</span><span class="pager active">1</span><span class="pager">2</span><span class="pager">3</span><span class="pager">›</span><span>20 条/页</span></div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="inpatient-form" data-evidence="source">
+      <div class="section-heading"><h2>工作区二：住院首页表单</h2><span class="evidence">已观测 · `homepage-form`、`homepage-charge-info` CSS</span></div>
+      <div class="workspace-grid">
+        <div class="card-section">
+          <div class="card-section-header">住院费用（元）</div>
+          <div class="card-section-body">
+            <div class="detail-list">
+              <div class="detail-item"><b>总费用</b><span class="ip-control">12,860.00</span></div>
+              <div class="detail-item"><b>自付金额</b><span class="ip-control">1,560.00</span></div>
+              <div class="detail-item"><b>一般医疗服务费</b><span class="ip-control">320.00</span></div>
+              <div class="detail-item"><b>护理费</b><span class="ip-control">840.00</span></div>
+              <div class="detail-item"><b>手术治疗费</b><span class="ip-control">6,500.00</span></div>
+              <div class="detail-item"><b>药品费</b><span class="ip-control">3,200.00</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="side-panel">
+          <div class="side-panel-title"><b>病历记录</b><span class="text-link">更多</span></div>
+          <div class="record"><i class="dot"></i><div><strong>首次病程记录</strong><small>2026-09-07 09:20 · 王医生</small></div><span class="tag input">录入</span></div>
+          <div class="record"><i class="dot"></i><div><strong>术前讨论记录</strong><small>2026-09-07 10:10 · 外科</small></div><span class="tag review">审核中</span></div>
+          <div class="record"><i class="dot" style="background:#fe5353"></i><div><strong>知情同意书</strong><small>2026-09-07 10:48 · 王医生</small></div><span class="tag reject">驳回</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="record-review-workspace" data-evidence="inferred">
+      <div class="section-heading"><h2>工作区三：病历审核与编辑</h2><span class="evidence">推断 · `view-record-review` source map 的 toolbar + editor-container</span></div>
+      <div class="docs-card" style="padding:0;overflow:hidden">
+        <div class="toolbar" style="border-bottom:1px solid var(--ip-border)">
+          <div class="form-item"><label>显示模式</label><span class="ip-control">单页显示 <b class="suffix">⌄</b></span></div>
+          <div class="form-item"><label>批注模式</label><span class="switch"></span></div>
+          <div class="toolbar-actions" style="margin-left:auto"><button class="ip-button plain">对比</button><button class="ip-button">保存</button></div>
+        </div>
+        <div style="display:grid;grid-template-columns:220px minmax(0,1fr);min-height:270px">
+          <div style="padding:14px;border-right:1px solid var(--ip-border);background:#fff">
+            <h3 style="margin-bottom:10px">病历目录</h3>
+            <div class="tag input" style="width:100%;justify-content:flex-start;border-radius:4px">入院记录</div>
+            <p style="padding:10px 8px">首次病程记录</p>
+            <p style="padding:10px 8px">术前讨论记录</p>
+            <p style="padding:10px 8px">手术记录</p>
+          </div>
+          <div style="padding:26px 34px;background:#fff">
+            <h3 style="text-align:center;font-size:18px">首次病程记录</h3>
+            <p style="margin-top:22px;color:var(--ip-text-regular);line-height:2">患者因“腹痛 2 天，加重伴发热 1 天”入院。完善检查后拟行进一步诊疗。此区域表示由 MedicalRecord 编辑器承载的文档工作面。</p>
+            <p style="margin-top:14px;color:var(--ip-text-muted)">该工作区组合为源码结构推断，未执行运行时路由。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="dialog-layer" data-evidence="source">
+      <div class="section-heading"><h2>覆盖层：EMR 对话框</h2><span class="evidence">已观测 · `.emr-dialog`、`InputDialog` 结构</span></div>
+      <div class="modal-demo">
+        <div class="modal">
+          <header>请输入内容</header>
+          <main><span class="ip-control placeholder" style="width:100%">请输入内容</span></main>
+          <footer><button class="ip-button primary">确定</button><button class="ip-button">取消</button></footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-contract-id="composition-coverage" data-evidence="inferred">
+      <div class="section-heading"><h2>组合覆盖与限制</h2><span class="evidence">推断 · 构建产物级</span></div>
+      <div class="docs-card limitations">
+        <p><b>应用壳：</b>SPA 根节点 `#app-model-frontend` 与异步路由 chunk 已确认。<b>页面模式：</b>模板列表、住院首页表单、病历审核编辑已由 source map / CSS 建立。<b>复合组件：</b>筛选工具栏、费用分组表单、记录侧栏、医嘱数据表、审核工具栏已发现。<b>基础组件：</b>按钮、输入、选择、Tabs、状态标签、表格、分页、Dialog/Drawer 相关前缀已发现。</p>
+        <p style="margin-top:8px">未启动目标 SPA，也未执行任何受限路由或接口调用；因此页面层级和基础控件均为源代码级证据，标为“推断”的编辑工作区不宣称运行时像素级还原。展示页不加载外部 CSS、字体或脚本。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="footer-inner">来源：`/Users/li/byway/ip-order-frontend/dist` · 检测栈：Vue 3、Element Plus（`ip-model-*` 命名空间）、VXE Table · 主色：#079c66 · 分析时间：2026-09-07 11:22 +08:00 · 仅源代码级分析</div></footer>
+
+  <script id="theme-contract" type="application/json">
+  {
+    "schemaVersion": 1,
+    "source": {"kind": "dist", "value": "/Users/li/byway/ip-order-frontend/dist"},
+    "stack": [
+      {"name": "Vue 3", "evidence": ["dist/index.html: chunk-vue-runtime.82212ed7.js", "dist/js/view-order-template.c6882f7f.js: defineComponent output"]},
+      {"name": "Element Plus (renamed ip-model namespace)", "evidence": ["dist/css/chunk-element-plus.2315773b.css: --ip-model-* tokens", "dist/js/view-order-template.c6882f7f.js: el-tabs/el-form/el-button calls"]},
+      {"name": "VXE Table", "evidence": ["dist/css/chunk-vxe-table.f097f59f.css: .vxe-table/.vxe-pager/.vxe-toolbar", "dist/js/chunk-vxe-table.dd0c9617.js"]}
+    ],
+    "tokens": [
+      {"id": "primary", "name": "--ip-model-color-primary", "value": "#079c66", "kind": "color", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css"]},
+      {"id": "table-deep", "name": "mainColorDeepBg", "value": "#005226", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-62a631b9.css :export"]},
+      {"id": "table-header", "name": "mainColorGradient", "value": "linear-gradient(180deg,#fafefd,#e5f9f6)", "kind": "gradient", "provenance": "source", "evidence": ["dist/css/theme-colors-62a631b9.css :export"]},
+      {"id": "table-border", "name": "tableBorderColor", "value": "#a2d1cc", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-62a631b9.css :export"]},
+      {"id": "font-family", "name": "--ip-model-font-family", "value": "Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif", "kind": "font", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css"]},
+      {"id": "radius", "name": "--ip-model-border-radius-base", "value": "4px", "kind": "radius", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css"]}
+    ],
+    "typography": [{"id": "base-type", "name": "Base text", "value": "14px / 24px", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css: --ip-model-font-size-base and --ip-model-font-line-height-primary"]}],
+    "layout": [
+      {"id": "control-height", "name": "Default control height", "value": "32px", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css: --ip-model-component-size"]},
+      {"id": "dense-table", "name": "Dense table row", "value": "32px", "provenance": "source", "evidence": ["dist/css/app.52ed74e7.css: .vxe-table .vxe-cell height/line-height"]}
+    ],
+    "components": [
+      {"id": "button", "name": "ip-model Button", "root": ".ip-model-button", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css", "dist/js/view-order-template.c6882f7f.js"], "slots": ["label"], "states": ["primary", "plain", "disabled"]},
+      {"id": "form-controls", "name": "Input, Select, Form item", "root": ".ip-model-input/.ip-model-select/.ip-model-form-item", "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css", "dist/css/337.584fda57.css: .homepage-form"], "slots": ["label", "control", "error"], "states": ["focus", "required", "invalid"]},
+      {"id": "status-tags", "name": "Record status tag", "root": ".record__state", "provenance": "source", "evidence": ["dist/css/view-medical-history.dcf60f15.css"], "slots": ["state label"], "states": ["INPUT", "CHECK", "REJECT", "SUBMIT"]},
+      {"id": "data-table", "name": "Order template table", "root": ".ip-model-table/.vxe-table", "provenance": "source", "evidence": ["dist/js/view-order-template.c6882f7f.js", "dist/css/theme-colors-62a631b9.css"], "slots": ["header", "row", "operation cell"], "states": ["current row", "selected checkbox"]},
+      {"id": "emr-dialog", "name": "EMR dialog", "root": ".emr-dialog", "provenance": "source", "evidence": ["dist/js/3708.782fc427.js: InputDialog", "dist/css/app.52ed74e7.css"], "slots": ["header", "body", "footer"], "states": ["overlay"]},
+      {"id": "record-review", "name": "Record review workspace", "root": ".record-review", "provenance": "inferred", "evidence": ["dist/js/view-record-review.df1c128a.js.map: RecordReview source"], "slots": ["toolbar", "editor-container"], "states": ["loading", "compare"]}
+    ],
+    "specimens": [
+      {"id": "source-summary", "name": "Source summary", "componentIds": [], "provenance": "source", "evidence": ["dist/index.html and asset manifest"]},
+      {"id": "theme-tokens", "name": "Theme tokens", "componentIds": [], "provenance": "source", "evidence": ["dist/css/chunk-element-plus.2315773b.css", "dist/css/theme-colors-62a631b9.css"]},
+      {"id": "order-template-list", "name": "Order template list", "componentIds": ["button", "form-controls", "data-table"], "provenance": "source", "evidence": ["dist/js/view-order-template.c6882f7f.js"]},
+      {"id": "inpatient-form", "name": "Inpatient form", "componentIds": ["form-controls", "status-tags"], "provenance": "source", "evidence": ["dist/css/9606.f54ebaea.css: .homepage-charge-info", "dist/css/3944.b7374104.css: .custom-tab"]},
+      {"id": "record-review-workspace", "name": "Record review workspace", "componentIds": ["record-review"], "provenance": "inferred", "evidence": ["dist/js/view-record-review.df1c128a.js.map"]},
+      {"id": "dialog-layer", "name": "EMR dialog", "componentIds": ["emr-dialog", "button", "form-controls"], "provenance": "source", "evidence": ["dist/js/3708.782fc427.js"]}
+    ],
+    "composition": [
+      {"id": "app-shell", "kind": "application-shell", "children": ["order-template-list", "inpatient-form", "record-review-workspace"], "provenance": "source", "evidence": ["dist/index.html: #app-model-frontend", "dist/js/app.9bc5f9cd.js"]},
+      {"id": "list-pattern", "kind": "page-pattern", "children": ["form-controls", "data-table"], "provenance": "source", "evidence": ["dist/js/view-order-template.c6882f7f.js"]},
+      {"id": "detail-pattern", "kind": "page-pattern", "children": ["form-controls", "status-tags"], "provenance": "source", "evidence": ["dist/css/9606.f54ebaea.css"]},
+      {"id": "review-pattern", "kind": "page-pattern", "children": ["record-review"], "provenance": "inferred", "evidence": ["dist/js/view-record-review.df1c128a.js.map"]}
+    ],
+    "limitations": ["No runtime route was rendered.", "No network request, credential submission, or route traversal was performed.", "Components tagged inferred are reconstructed from CSS/JS/source-map evidence only."],
+    "generatedAt": "2026-09-07T11:22:09+08:00"
+  }
+  </script>
+</body>
+</html>

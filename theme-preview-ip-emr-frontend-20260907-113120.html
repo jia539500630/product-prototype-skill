@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IP EMR Theme &amp; Component Preview</title>
+  <style>
+    /* evidence: dist/css/theme-colors-5cd74d38.css :export */
+    :root {
+      --mainColor: #079c66;
+      --mainColorBg: #ebfff8;
+      --mainColorDeepBg: #005226;
+      --mainColorGradient: linear-gradient(180deg, #fafefd 0%, #e5f9f6 100%);
+      --tableBorderColor: #a2d1cc;
+      --pageBg: #f8f8f8;
+      --fontColor: #41934d;
+      --dialogFontColor: #226642;
+      --textColor: #000;
+      --textLightColor: #666;
+      --labelColor: #999;
+      --borderColor: #dcdcdc;
+      --inputBgColor: #f7f7f7;
+      --hoverBgColor: #edf8f6;
+      --activeBgColor: #efefef;
+      --green: #67c23a;
+      --blue: #1989fa;
+      --red: #fe5353;
+      --lightRed: #ffeded;
+      --yellow: #ffa000;
+      --lightYellow: #fff5e5;
+      --orange: #f27e5f;
+      --lightBlue: #e5f1ff;
+      --lightGreen: #f0f9eb;
+      --purpleColor: #5d66bc;
+      --white: #fff;
+      --chromeInk: #18231f;
+      --chromeMuted: #53655d;
+      --chromeLine: #d9e4dd;
+      --chromeBg: #eff4f1;
+      --chromeCode: #263d34;
+      --chromeShadowSoft: rgba(0,0,0,.08);
+      --chromeShadowPanel: rgba(0,0,0,.12);
+      --chromeShadowDialog: rgba(0,0,0,.16);
+      --chromeOverlay: rgba(0,0,0,.12);
+      --mainShadow: rgba(7,156,102,.32);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--chromeInk); background: var(--chromeBg); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    button, input { font: inherit; }
+    .page { max-width: 1440px; margin: 0 auto; background: var(--white); box-shadow: 0 1px 14px var(--chromeShadowSoft); }
+    .hero { padding: 34px 42px 28px; border-bottom: 1px solid var(--chromeLine); background: var(--mainColorGradient); }
+    .eyebrow, .evidence { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0; }
+    .eyebrow { color: var(--mainColorDeepBg); }
+    .evidence { padding: 2px 7px; border: 1px solid var(--tableBorderColor); color: var(--dialogFontColor); background: var(--mainColorBg); border-radius: 2px; white-space: nowrap; }
+    .evidence.inferred { color: var(--chromeCode); background: var(--chromeBg); border-color: var(--chromeLine); }
+    h1 { margin: 7px 0 4px; font-size: 30px; line-height: 1.2; font-weight: 650; letter-spacing: 0; }
+    .sub { margin: 0; color: var(--chromeMuted); }
+    .content { padding: 0 42px 42px; }
+    .section { padding: 30px 0; border-bottom: 1px solid var(--chromeLine); }
+    .section:last-child { border-bottom: 0; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    h2 { margin: 0; font-size: 20px; letter-spacing: 0; }
+    h3 { margin: 0; font-size: 15px; letter-spacing: 0; }
+    .muted { color: var(--chromeMuted); }
+    .summary-grid, .token-grid, .component-grid { display: grid; gap: 12px; }
+    .summary-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .token-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .component-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .summary, .token, .specimen { min-width: 0; border: 1px solid var(--chromeLine); background: var(--white); }
+    .summary { padding: 14px; border-top: 3px solid var(--mainColor); }
+    .summary b { display: block; margin-bottom: 4px; font-size: 16px; }
+    .token { overflow: hidden; }
+    .swatch { height: 42px; background: var(--swatch); border-bottom: 1px solid var(--chromeLine); }
+    .token p { margin: 8px 10px; color: var(--chromeMuted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .token strong { display: block; margin: 9px 10px 0; }
+    .specimen { padding: 16px; }
+    .specimen-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .stage { padding: 16px; border: 1px solid var(--chromeLine); background: var(--pageBg); overflow: hidden; }
+    .el-button { height: 32px; padding: 0 15px; border: 1px solid var(--borderColor); border-radius: 3px; color: var(--textColor); background: var(--white); cursor: default; }
+    .el-button + .el-button { margin-left: 8px; }
+    .el-button--primary { color: var(--white); border-color: var(--mainColor); background: var(--mainColor); box-shadow: 0 3px 6px var(--mainShadow); }
+    .el-button--danger { color: var(--white); border-color: var(--red); background: var(--red); }
+    .el-button:disabled { color: var(--labelColor); border-color: var(--chromeLine); background: var(--activeBgColor); box-shadow: none; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    .toolbar .el-button + .el-button { margin-left: 0; }
+    .el-input, .el-select, .el-date-editor { position: relative; display: inline-flex; align-items: center; height: 32px; min-width: 160px; border: 1px solid var(--borderColor); border-radius: 3px; background: var(--white); }
+    .el-input__inner { width: 100%; height: 30px; padding: 0 28px 0 10px; color: var(--textColor); border: 0; outline: 0; background: transparent; }
+    .suffix { position: absolute; right: 9px; color: var(--labelColor); font-size: 13px; }
+    .el-form { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 13px 18px; }
+    .el-form-item { display: flex; align-items: center; min-width: 0; }
+    .el-form-item__label { flex: 0 0 82px; color: var(--textLightColor); text-align: right; padding-right: 9px; }
+    .el-form-item__content { flex: 1; min-width: 0; }
+    .el-form-item .el-input, .el-form-item .el-select { width: 100%; min-width: 0; }
+    .error .el-input { border-color: var(--red); }
+    .error-tip { margin-top: 3px; color: var(--red); font-size: 12px; }
+    .el-checkbox, .el-radio { display: inline-flex; align-items: center; margin-right: 14px; color: var(--textLightColor); }
+    .check-mark, .radio-mark { display: inline-grid; place-items: center; width: 14px; height: 14px; margin-right: 6px; border: 1px solid var(--borderColor); background: var(--white); }
+    .el-checkbox.selected .check-mark { color: var(--white); border-color: var(--mainColor); background: var(--mainColor); font-size: 11px; }
+    .radio-mark { border-radius: 50%; }
+    .el-radio.selected .radio-mark::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mainColor); }
+    .switch { display: inline-block; width: 34px; height: 18px; padding: 2px; border-radius: 10px; background: var(--borderColor); vertical-align: middle; }
+    .switch::after { content: ""; display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--white); }
+    .switch.active { background: var(--mainColor); }
+    .switch.active::after { margin-left: 14px; }
+    .el-tabs__header { display: flex; gap: 24px; border-bottom: 1px solid var(--borderColor); }
+    .el-tabs__item { height: 38px; padding: 8px 2px; color: var(--textLightColor); }
+    .el-tabs__item.active { color: var(--mainColor); border-bottom: 2px solid var(--mainColor); }
+    .tag { display: inline-flex; padding: 2px 8px; border-radius: 2px; font-size: 12px; border: 1px solid currentColor; }
+    .tag.success { color: var(--mainColor); background: var(--mainColorBg); }
+    .tag.warning { color: var(--yellow); background: var(--lightYellow); }
+    .tag.danger { color: var(--red); background: var(--lightRed); }
+    .tag.info { color: var(--blue); background: var(--lightBlue); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); }
+    th { padding: 9px 10px; color: var(--fontColor); text-align: left; font-weight: 600; background: var(--mainColorGradient); border: 1px solid var(--tableBorderColor); }
+    td { padding: 9px 10px; color: var(--textLightColor); border: 1px solid var(--tableBorderColor); }
+    tr.selected td { background: var(--mainColorBg); }
+    .row-actions { color: var(--mainColor); white-space: nowrap; }
+    .pagination { display: flex; align-items: center; justify-content: flex-end; gap: 7px; margin-top: 12px; color: var(--textLightColor); }
+    .page-btn { display: inline-grid; place-items: center; min-width: 27px; height: 27px; padding: 0 6px; border: 1px solid var(--borderColor); background: var(--white); }
+    .page-btn.current { color: var(--white); border-color: var(--mainColor); background: var(--mainColor); }
+    .card-section { border: 1px solid var(--chromeLine); background: var(--white); }
+    .card-section + .card-section { margin-top: 12px; }
+    .card-title { padding: 10px 13px; color: var(--dialogFontColor); font-weight: 650; border-bottom: 1px solid var(--chromeLine); background: var(--mainColorGradient); }
+    .card-body { padding: 14px; }
+    .alert { display: flex; gap: 9px; padding: 10px 12px; color: var(--dialogFontColor); border: 1px solid var(--tableBorderColor); background: var(--mainColorBg); }
+    .empty { padding: 30px; color: var(--labelColor); text-align: center; border: 1px dashed var(--borderColor); background: var(--white); }
+    .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid var(--tableBorderColor); border-top-color: var(--mainColor); border-radius: 50%; vertical-align: -3px; }
+    .overlay-stage { position: relative; min-height: 260px; padding: 20px; background: var(--activeBgColor); }
+    .el-overlay { position: absolute; inset: 0; display: grid; place-items: center; background: var(--chromeOverlay); }
+    .el-dialog { width: min(470px, calc(100% - 28px)); border-radius: 3px; background: var(--white); box-shadow: 0 6px 18px var(--chromeShadowDialog); }
+    .el-dialog__header { padding: 14px 18px; color: var(--dialogFontColor); border-bottom: 1px solid var(--borderColor); font-size: 18px; }
+    .el-dialog__body { padding: 20px; color: var(--textLightColor); }
+    .el-dialog__footer { padding: 12px 20px 20px; text-align: center; }
+    .drawer { position: absolute; inset: 0 0 0 auto; width: 54%; padding: 16px; background: var(--white); box-shadow: -4px 0 12px var(--chromeShadowPanel); }
+    .drawer-title { padding-bottom: 10px; color: var(--dialogFontColor); border-bottom: 1px solid var(--borderColor); font-size: 16px; font-weight: 650; }
+    .timeline { position: relative; margin: 3px 0 0 9px; border-left: 1px solid var(--mainColor); }
+    .timeline-item { position: relative; padding: 0 0 14px 18px; }
+    .timeline-item::before { content: ""; position: absolute; left: -5px; top: 4px; width: 8px; height: 8px; border: 2px solid var(--mainColor); border-radius: 50%; background: var(--white); }
+    .timeline-item.active { margin-right: -5px; background: var(--hoverBgColor); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; min-height: 42px; padding: 0 10px; border: 1px solid var(--chromeLine); background: var(--white); }
+    .detail-head strong { color: var(--textColor); }
+    .workspaces { display: grid; gap: 18px; }
+    .workspace { border: 1px solid var(--chromeLine); }
+    .workspace-title { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid var(--chromeLine); background: var(--mainColorGradient); }
+    .workspace-body { padding: 14px; background: var(--pageBg); }
+    .workspace .stage { background: var(--white); }
+    .two-col { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 14px; }
+    .stack { display: grid; gap: 12px; }
+    .code { margin: 12px 0 0; padding: 11px 12px; overflow: auto; color: var(--chromeCode); border: 1px solid var(--chromeLine); background: var(--chromeBg); font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .footer { padding: 24px 42px; color: var(--chromeMuted); background: var(--chromeBg); border-top: 1px solid var(--chromeLine); font-size: 12px; }
+    @media (max-width: 880px) {
+      .hero, .content, .footer { padding-left: 20px; padding-right: 20px; }
+      .summary-grid, .token-grid, .component-grid, .two-col { grid-template-columns: 1fr; }
+      .el-form { grid-template-columns: 1fr; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">IP EMR FRONTEND · 产物证据预览</div>
+      <h1>IP EMR 主题与组件基线</h1>
+      <p class="sub">基于 <code>/Users/li/byway/ip-emr-frontend/dist</code> 分析 · Vue 3 + Element Plus + vxe-table</p>
+    </header>
+
+    <div class="content">
+      <section class="section">
+        <div class="section-head">
+          <h2>分析摘要</h2>
+          <span class="evidence">显式主题 token + CSS/JS 结构</span>
+        </div>
+        <div class="summary-grid">
+          <article class="summary"><b>产品标识</b><span class="muted"><code>ip-emr-frontend</code>（入口标题）</span></article>
+          <article class="summary"><b>应用领域</b><span class="muted">住院病历、手术记录与审签流程</span></article>
+          <article class="summary"><b>组件栈</b><span class="muted">Element Plus 与 vxe-table 均有实际 CSS/JS 签名</span></article>
+          <article class="summary"><b>主要色</b><span class="muted"><code>mainColor #079c66</code></span></article>
+        </div>
+        <pre class="code">覆盖层级：应用壳（推断）· 页面模式（推断：列表、详情/表单、审签）· 组合组件（推断：筛选栏、详情头、记录步骤）· 原件（CSS/JS 结构）
+运行时限制：入口 HTML 仅有 #app；本预览未加载 API、登录态或实际路由，因此不将任何组件标为 DOM 已观测。</pre>
+      </section>
+
+      <section class="section" data-contract-id="tokens" data-evidence="source">
+        <div class="section-head">
+          <h2>主题与排版</h2>
+          <span class="evidence">已观测：<code>:export</code> token</span>
+        </div>
+        <div class="token-grid">
+          <article class="token"><div class="swatch" style="--swatch:var(--mainColor)"></div><strong>mainColor</strong><p>#079c66</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--mainColorBg)"></div><strong>mainColorBg</strong><p>#ebfff8</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--mainColorDeepBg)"></div><strong>mainColorDeepBg</strong><p>#005226</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--pageBg)"></div><strong>pageBg</strong><p>#f8f8f8</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--tableBorderColor)"></div><strong>tableBorderColor</strong><p>#a2d1cc</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--red)"></div><strong>red</strong><p>#fe5353</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--yellow)"></div><strong>yellow</strong><p>#ffa000</p></article>
+          <article class="token"><div class="swatch" style="--swatch:var(--purpleColor)"></div><strong>purpleColor</strong><p>#5d66bc</p></article>
+        </div>
+        <pre class="code">样式线索：文本使用 12px、14px、16px、18px；Element 表单控件与 detail-head 多处出现 32px / 42px 高度；状态标签和记录描述出现 2px、3px、4px 圆角。</pre>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>原件与反馈</h2>
+          <span class="evidence inferred">推断：Element Plus CSS/JS 组件簇</span>
+        </div>
+        <div class="component-grid">
+          <article class="specimen" data-contract-id="element-controls" data-evidence="inferred">
+            <div class="specimen-head"><h3>按钮与状态标签</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="stage">
+              <div class="toolbar">
+                <button class="el-button">取消</button><button class="el-button el-button--primary">保存</button><button class="el-button el-button--danger">退回</button><button class="el-button el-button--primary" disabled>提交</button>
+                <span class="tag success">已审签</span><span class="tag warning">待审签</span><span class="tag danger">审签退回</span><span class="tag info">住院</span>
+              </div>
+            </div>
+          </article>
+          <article class="specimen" data-contract-id="element-form-controls" data-evidence="inferred">
+            <div class="specimen-head"><h3>表单控制</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="stage">
+              <div class="toolbar">
+                <label class="el-input"><input class="el-input__inner" value="患者姓名"><span class="suffix">⌕</span></label>
+                <span class="el-select"><span class="el-input__inner">住院状态</span><span class="suffix">⌄</span></span>
+                <span class="el-date-editor"><span class="el-input__inner">2026-09-07</span><span class="suffix">◷</span></span>
+              </div>
+              <div style="margin-top:13px">
+                <span class="el-checkbox selected"><span class="check-mark">✓</span>仅显示待审签</span>
+                <span class="el-radio selected"><span class="radio-mark"></span>当前病区</span><span class="el-radio"><span class="radio-mark"></span>全部病区</span>
+                <span class="switch active"></span><span class="muted" style="margin-left:6px">启用提醒</span>
+              </div>
+            </div>
+          </article>
+          <article class="specimen" data-contract-id="element-tabs" data-evidence="inferred">
+            <div class="specimen-head"><h3>页签与校验</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="stage">
+              <div class="el-tabs__header"><div class="el-tabs__item active">病历记录</div><div class="el-tabs__item">检验检查</div><div class="el-tabs__item">手术信息</div></div>
+              <div class="error" style="margin-top:14px;max-width:300px"><label class="el-input"><input class="el-input__inner" value=""><span class="suffix">!</span></label><div class="error-tip">请输入记录名称</div></div>
+            </div>
+          </article>
+          <article class="specimen" data-contract-id="element-feedback" data-evidence="inferred">
+            <div class="specimen-head"><h3>提示、加载与空状态</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="stage">
+              <div class="alert"><b>i</b><span>已根据当前患者信息更新记录内容。</span></div>
+              <p class="muted"><span class="spinner"></span> 正在加载病历记录</p>
+              <div class="empty">暂无数据</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>数据工作区原件</h2>
+          <span class="evidence inferred">推断：<code>.el-table</code>、<code>.vxe-table--render-default</code>、<code>.el-pagination</code></span>
+        </div>
+        <div class="stage" data-contract-id="data-workspace" data-evidence="inferred">
+          <div class="toolbar" style="margin-bottom:13px">
+            <label class="el-input"><input class="el-input__inner" value="记录名称 / 医师"><span class="suffix">⌕</span></label>
+            <span class="el-select"><span class="el-input__inner">全部状态</span><span class="suffix">⌄</span></span>
+            <button class="el-button el-button--primary">查询</button><button class="el-button">重置</button><button class="el-button">导出</button>
+          </div>
+          <table>
+            <thead><tr><th style="width:40px">□</th><th>记录名称</th><th>病区</th><th>状态</th><th>更新时间</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr class="selected"><td>✓</td><td>术前小结</td><td>胃肠一区</td><td><span class="tag warning">待审签</span></td><td>2026-09-07 10:21</td><td class="row-actions">查看&nbsp;&nbsp;编辑</td></tr>
+              <tr><td>□</td><td>手术记录</td><td>胃肠一区</td><td><span class="tag success">已审签</span></td><td>2026-09-07 09:52</td><td class="row-actions">查看&nbsp;&nbsp;打印</td></tr>
+              <tr><td>□</td><td>病程记录</td><td>胃肠二区</td><td><span class="tag danger">审签退回</span></td><td>2026-09-06 16:18</td><td class="row-actions">查看&nbsp;&nbsp;修改</td></tr>
+            </tbody>
+          </table>
+          <div class="pagination"><span>共 36 条</span><span class="page-btn">‹</span><span class="page-btn current">1</span><span class="page-btn">2</span><span class="page-btn">3</span><span class="page-btn">›</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>业务组合与页面模式</h2>
+          <span class="evidence inferred">原型组合推断</span>
+        </div>
+        <div class="workspaces">
+          <article class="workspace" data-contract-id="list-workspace" data-evidence="inferred">
+            <div class="workspace-title"><h3>列表与搜索工作区</h3><span class="evidence inferred">推断：搜索栏 + 表格 + 分页</span></div>
+            <div class="workspace-body">
+              <div class="detail-head"><strong>住院病历</strong><span class="muted">当前病区 · 36 条记录</span></div>
+              <div class="stage" style="border-top:0">
+                <div class="toolbar" style="margin-bottom:12px"><span class="el-select"><span class="el-input__inner">全部类型</span><span class="suffix">⌄</span></span><span class="el-date-editor"><span class="el-input__inner">开始日期 - 结束日期</span><span class="suffix">◷</span></span><button class="el-button el-button--primary">查询</button></div>
+                <table><thead><tr><th>患者</th><th>记录</th><th>创建人</th><th>状态</th></tr></thead><tbody><tr><td>患者 A</td><td>病程记录</td><td>陈医生</td><td><span class="tag success">已审签</span></td></tr><tr><td>患者 B</td><td>术前小结</td><td>李医生</td><td><span class="tag warning">待审签</span></td></tr></tbody></table>
+              </div>
+            </div>
+          </article>
+
+          <article class="workspace" data-contract-id="detail-edit-workspace" data-evidence="inferred">
+            <div class="workspace-title"><h3>详情与编辑工作区</h3><span class="evidence inferred">推断：<code>.detail-head</code> + <code>.el-form-item</code> + CardSection</span></div>
+            <div class="workspace-body">
+              <div class="detail-head"><strong>手术记录 · 编辑</strong><div><button class="el-button">暂存</button><button class="el-button el-button--primary">提交审签</button></div></div>
+              <div class="card-section" style="border-top:0"><div class="card-title">申请信息</div><div class="card-body">
+                <div class="el-form">
+                  <label class="el-form-item"><span class="el-form-item__label">拟手术时间</span><span class="el-form-item__content"><span class="el-input"><input class="el-input__inner" value="2026-09-08 09:00"></span></span></label>
+                  <label class="el-form-item"><span class="el-form-item__label">预计时长</span><span class="el-form-item__content"><span class="el-input"><input class="el-input__inner" value="2"></span></span></label>
+                  <label class="el-form-item"><span class="el-form-item__label">手术类型</span><span class="el-form-item__content"><span class="el-select"><span class="el-input__inner">住院手术</span><span class="suffix">⌄</span></span></span></label>
+                </div>
+              </div></div>
+              <div class="card-section"><div class="card-title">手术信息</div><div class="card-body"><div class="el-form"><label class="el-form-item"><span class="el-form-item__label">患者入室</span><span class="el-form-item__content"><span class="el-input"><input class="el-input__inner" value="2026-09-08 08:40"></span></span></label><label class="el-form-item"><span class="el-form-item__label">麻醉开始</span><span class="el-form-item__content"><span class="el-input"><input class="el-input__inner" value="2026-09-08 08:50"></span></span></label></div></div></div>
+            </div>
+          </article>
+
+          <article class="workspace" data-contract-id="review-workspace" data-evidence="inferred">
+            <div class="workspace-title"><h3>审签与过程工作区</h3><span class="evidence inferred">推断：<code>.step-record</code> / <code>.record-step__icon</code></span></div>
+            <div class="workspace-body">
+              <div class="two-col">
+                <div class="stage">
+                  <div class="detail-head"><strong>审签记录</strong><span class="tag warning">待审签</span></div>
+                  <div class="timeline" style="margin-top:15px">
+                    <div class="timeline-item"><b>创建记录</b><div class="muted">陈医生 · 2026-09-07 09:52</div><div class="muted">病程记录已保存</div></div>
+                    <div class="timeline-item active"><b>提交审签</b><div class="muted">陈医生 · 2026-09-07 10:21</div><div class="tag warning" style="margin-top:5px">待审签</div></div>
+                    <div class="timeline-item"><b>科室审签</b><div class="muted">等待处理</div></div>
+                  </div>
+                </div>
+                <div class="stack">
+                  <div class="alert"><b>!</b><span>当前记录需要完成审签后才能归档。</span></div>
+                  <div class="card-section"><div class="card-title">审签操作</div><div class="card-body"><label class="el-input" style="width:100%"><input class="el-input__inner" value="审签意见"></label><div style="margin-top:12px;text-align:right"><button class="el-button el-button--danger">退回</button><button class="el-button el-button--primary">审签通过</button></div></div></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>覆盖层与弹出层</h2>
+          <span class="evidence inferred">推断：<code>.el-dialog</code>、<code>.el-drawer</code>、<code>.el-popper</code></span>
+        </div>
+        <div class="component-grid">
+          <article class="specimen" data-contract-id="dialog" data-evidence="inferred">
+            <div class="specimen-head"><h3>确认对话框</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="overlay-stage"><div class="el-overlay"><div class="el-dialog"><div class="el-dialog__header">提示</div><div class="el-dialog__body">确认提交当前病历记录吗？</div><div class="el-dialog__footer"><button class="el-button">取消</button><button class="el-button el-button--primary">确认</button></div></div></div></div>
+          </article>
+          <article class="specimen" data-contract-id="drawer" data-evidence="inferred">
+            <div class="specimen-head"><h3>辅助记录抽屉</h3><span class="evidence inferred">CSS/JS 推断</span></div>
+            <div class="overlay-stage"><div class="drawer"><div class="drawer-title">检查记录</div><div class="timeline" style="margin-top:16px"><div class="timeline-item"><b>检验结果</b><div class="muted">2026-09-07</div></div><div class="timeline-item"><b>影像报告</b><div class="muted">2026-09-06</div></div></div></div></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" data-evidence="fallback">
+        <div class="section-head">
+          <h2>未在本次产物证据中确认</h2>
+          <span class="evidence inferred">模拟/未在产物中确认</span>
+        </div>
+        <p class="muted">未展示独立的通知气泡、级联选择器、穿梭框等；它们不进入此产品的已发现组件库存。</p>
+      </section>
+    </div>
+
+    <footer class="footer">
+      来源：<code>/Users/li/byway/ip-emr-frontend/dist</code> · 入口 <code>index.html</code> · token <code>css/theme-colors-5cd74d38.css</code> · 结构线索来自编译 CSS 与 JS。检测栈：Vue 3、Element Plus、vxe-table。主色：<code>#079c66</code>。限制：未执行路由、未连接 API、未获得运行时 DOM；所有组件示例均为源代码/样式推断。
+    </footer>
+  </main>
+
+  <script id="theme-contract" type="application/json">
+{
+  "schemaVersion": 1,
+  "source": {
+    "kind": "dist",
+    "value": "/Users/li/byway/ip-emr-frontend/dist",
+    "entry": "index.html"
+  },
+  "stack": [
+    {"name": "Vue 3", "evidence": ["dist/js/chunk-fd51e99a.306107bb.js: Vue render helpers"]},
+    {"name": "Element Plus", "evidence": ["dist/css: .el-button/.el-table/.el-dialog", "dist/js: el-input/el-date-picker/element_plus imports"]},
+    {"name": "vxe-table", "evidence": ["dist/css: .vxe-table--render-default/.vxe-modal--wrapper/.vxe-pager--num-btn"]}
+  ],
+  "tokens": [
+    {"id": "main-color", "name": "mainColor", "value": "#079c66", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export mainColor"]},
+    {"id": "main-color-bg", "name": "mainColorBg", "value": "#ebfff8", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export mainColorBg"]},
+    {"id": "main-deep-bg", "name": "mainColorDeepBg", "value": "#005226", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export mainColorDeepBg"]},
+    {"id": "table-border", "name": "tableBorderColor", "value": "#a2d1cc", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export tableBorderColor"]},
+    {"id": "page-bg", "name": "pageBg", "value": "#f8f8f8", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export pageBg"]},
+    {"id": "success-green", "name": "green", "value": "#67c23a", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export green"]},
+    {"id": "warning-yellow", "name": "yellow", "value": "#ffa000", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export yellow"]},
+    {"id": "danger-red", "name": "red", "value": "#fe5353", "kind": "color", "provenance": "source", "evidence": ["dist/css/theme-colors-5cd74d38.css :export red"]}
+  ],
+  "typography": [
+    {"id": "type-12", "name": "12px text", "value": "12px", "provenance": "inferred", "evidence": ["dist/css: .moment[data-v-e04fa15c]{font-size:12px}", "dist/css: .textFoemDialog .verify{font-size:12px}"]},
+    {"id": "type-18", "name": "dialog title", "value": "18px", "provenance": "inferred", "evidence": ["dist/css: .textFoemDialog.custom_class .el-dialog__title{font-size:18px}"]}
+  ],
+  "layout": [
+    {"id": "control-height", "name": "control and form heights", "value": "32px", "provenance": "inferred", "evidence": ["dist/css: .step-record__operator{height:32px}", "dist/css: .moment__type{height:24px}"]},
+    {"id": "detail-head-height", "name": "detail-head", "value": "42px", "provenance": "inferred", "evidence": ["dist/css/chunk-common~71286d7d.9da0a41c.css: .detail-head{height:42px}"]}
+  ],
+  "components": [
+    {"id": "element-controls", "name": "Element Plus controls", "root": ".el-button", "provenance": "inferred", "evidence": ["dist/css selector counts: .el-button 157, .el-button--primary 65", "dist/js: el-button components"], "slots": ["label"], "states": ["primary", "danger", "disabled"]},
+    {"id": "element-form-controls", "name": "Form controls", "root": ".el-input/.el-select/.el-date-editor", "provenance": "inferred", "evidence": ["dist/css selector counts: .el-input 175, .el-select 124, .el-date-editor 39"], "slots": ["control", "suffix"], "states": ["error", "selected"]},
+    {"id": "element-tabs", "name": "Tabs", "root": ".el-tabs", "provenance": "inferred", "evidence": ["dist/css selector counts: .el-tabs__item 125, .el-tabs__header 73"], "slots": ["tab list", "active tab", "panel"], "states": ["active"]},
+    {"id": "data-workspace", "name": "Data workspace", "root": ".el-table/.vxe-table--render-default", "provenance": "inferred", "evidence": ["dist/css selector counts: .el-table 308, .vxe-table--render-default 275"], "slots": ["filter toolbar", "header row", "body row", "pagination"], "states": ["selected", "loading", "empty"]},
+    {"id": "dialog", "name": "Dialog", "root": ".el-dialog", "provenance": "inferred", "evidence": ["dist/css: .el-dialog__header/.el-dialog__body/.el-dialog__footer", "dist/css: .textFoemDialog custom dialog rules"], "slots": ["header", "body", "footer"], "states": ["open"]},
+    {"id": "drawer", "name": "Drawer", "root": ".el-drawer", "provenance": "inferred", "evidence": ["dist/css selector counts: .el-drawer 29, .el-drawer__body 21", "dist/css: .checkRecordsDraw .el-overlay"], "slots": ["title", "body"], "states": ["open"]},
+    {"id": "record-step", "name": "Record step", "root": ".step-record", "provenance": "inferred", "evidence": ["dist/css/chunk-2e4459df.c5d9cab9.css: .step-record, .step-record__header, .step-record__operator, .step-record__desc"], "slots": ["header", "operator", "text", "description"], "states": ["highlight", "submit", "reject"]}
+  ],
+  "specimens": [
+    {"id": "list-workspace", "name": "List and search workspace", "componentIds": ["data-workspace", "element-form-controls"], "provenance": "inferred", "evidence": ["dist/css: .auditSignatures .search/.tableContent", "dist/css: .el-table/.el-pagination"]},
+    {"id": "detail-edit-workspace", "name": "Detail and edit workspace", "componentIds": ["element-form-controls"], "provenance": "inferred", "evidence": ["dist/css: .detail-head", "dist/js/chunk-22dc9d24.6b2d53cc.js: el-form/el-form-item/CardSection"]},
+    {"id": "review-workspace", "name": "Review process workspace", "componentIds": ["record-step", "element-controls"], "provenance": "inferred", "evidence": ["dist/css: .step-record states", "dist/js: surgical record status strings 待提交/待审签/审签退回/已审签"]}
+  ],
+  "composition": [
+    {"id": "application-shell", "kind": "application shell", "children": ["list-workspace", "detail-edit-workspace", "review-workspace"], "provenance": "inferred", "evidence": ["dist/index.html #app only; route chunks available but no runtime DOM"]},
+    {"id": "page-patterns", "kind": "page patterns", "children": ["list-workspace", "detail-edit-workspace", "review-workspace"], "provenance": "inferred", "evidence": ["compiled CSS/JS structures"]},
+    {"id": "composites", "kind": "composite components", "children": ["data-workspace", "record-step"], "provenance": "inferred", "evidence": ["CSS root families and JS render trees"]},
+    {"id": "primitives", "kind": "primitives", "children": ["element-controls", "element-form-controls", "element-tabs", "dialog", "drawer"], "provenance": "inferred", "evidence": ["Element Plus and vxe-table CSS prefixes"]}
+  ],
+  "limitations": [
+    "No authenticated runtime route was rendered.",
+    "The entry document contains only #app, so no component is claimed as DOM-observed.",
+    "All component demonstrations are reconstructed from compiled CSS/JS structure and are visibly labeled inferred."
+  ],
+  "generatedAt": "2026-09-07T11:31:20+08:00"
+}
+  </script>
+</body>
+</html>
