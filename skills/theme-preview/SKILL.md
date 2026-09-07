@@ -5,7 +5,7 @@ description: Use when the user points at a live page URL, a dist/static build fo
 
 # Evidence-Based Theme & Component Showcase
 
-Given one product's URL or build artifact, produce one static `theme-preview.html` that documents the product's actual visual tokens and components.
+Given one product's URL or build artifact, produce one standalone static prototype baseline that extracts reusable theme, component, and layout constraints for later project prototyping.
 
 **Core principle:** never claim a color, component, framework, or business domain is real until the source proves it. Every preview decision must be traceable to an artifact, page markup, runtime DOM, or explicit theme configuration.
 
@@ -30,6 +30,10 @@ Do not use when the user wants to build a new app, redesign from scratch, or pro
    - **Low-confidence heuristics**: color frequency, `theme-color` meta, favicon colors. Use only when labeled low-confidence, never as the primary palette.
 4. Anything built without real evidence must be marked **fallback**. Use `data-evidence="fallback"` on those sections and say "模拟/未在产物中确认" in the visible label. Never present fallback styling as the product's real style.
 5. The output stays one self-contained static HTML file. No framework, build step, or real interactivity.
+
+## Prototype Contract
+
+Read `references/contract-schema.md`. Every extracted item is `source` (DOM/computed or explicit token), `inferred` (CSS/JS-supported but not runtime-observed), `fallback` (needed for baseline completeness), or `chrome` (neutral documentation shell). Render inferred components in their own section with a visible `推断` label; never call them observed. Embed the contract in `script#theme-contract[type="application/json"]`, but do not render its JSON.
 
 ## Workflow
 
@@ -89,13 +93,15 @@ For every promoted block record root, slot order/alignment, repeating child temp
 
 ### 6. Verify before finishing
 
-- Every hex/gradient shown appears in the collected evidence (search the source again to confirm).
+- Every source/inferred hex or gradient shown appears in collected evidence; explicit `chrome` tokens are exempt.
 - No leftover text, colors, or component names from previous examples appear in the output.
 - The HTML opens standalone and renders without network dependencies (the optional Element-UI link from the old template must not be copied).
+- Use a linear page with no sidebar: summary, theme/typography, observed components, inferred components, layout specimens, optional fallbacks, limitations. A composition not directly observed visibly says `原型组合推断`.
+- Do not submit credentials, bypass access control, or traverse unrelated routes. If rendering is unavailable, record the source-only limitation in the contract and footer.
 
 ## Output
 
-- Write to `theme-preview.html` in the current repo root unless the user gives another filename.
+- Write to `theme-preview-<sanitized-product>.html` in the current repo root unless the user gives another filename. If it exists, append `-<YYYYMMDD-HHmmss>`; never overwrite silently.
 - Header subtitle names the real product and detected framework, e.g. "基于 <source> 分析 · React + Material-UI".
 - `lang` follows the user's language, defaulting to `zh-CN` when ambiguous.
 

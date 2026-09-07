@@ -14,7 +14,7 @@ Use this reference only to decide whether the current source *proves* a UI frame
 | Tailwind | Utility classes (`bg-*`, `px-*`, `rounded-*`) with no semantic framework prefix | No component library tokens; extract theme from CSS vars/config or computed styles only |
 | Custom / legacy | `:root` CSS variables, SCSS `:export` tokens, hashed/unknown class names | Build from explicit tokens first; treat class names as low-confidence component evidence |
 
-If multiple frameworks appear (e.g. custom CSS plus one library), show what is actually used on the analyzed route and do not claim unused libraries.
+If multiple frameworks appear (e.g. custom CSS plus one library), show what is actually used on the analyzed route and do not claim unused libraries. Bundle signatures prove availability only; route use requires DOM, route markup, or a product wrapper reference.
 
 ## Component evidence mapping
 
@@ -41,7 +41,6 @@ Look for these markers in rendered DOM, HTML, CSS selectors, or JS component nam
 | Card / stat card | `.el-card`, `.ant-card`, `.MuiCard` | repeated label+value boxes | `Card`, `Statistic` |
 | Empty state | `.el-empty`, `.ant-empty`, `.Mui*` empty placeholder | empty message with illustration | `Empty` |
 | Tree / org tree / file tree | `.el-tree`, `.ant-tree`, `.MuiTreeView`, `*-tree`, `*-tree-node` | nested lists, indent, expand arrows, connectors | `Tree`, `TreeView`, `OrgTree` |
-| Dialog / modal **variants** | `.el-dialog`, `.ant-modal`, `.MuiDialog`, `*-dialog`, `*-modal` | `role="dialog"`, overlay, header/body/footer | `Dialog`, `Modal`, `MessageBox` |
 | Drawer | `.el-drawer`, `.ant-drawer`, `.MuiDrawer` | side panel overlay | `Drawer` |
 | Steps | `.el-steps`, `.ant-steps`, `.MuiStepper` | numbered horizontal/vertical steps | `Steps`, `Stepper` |
 | Date / range picker | `.el-date-picker`, `.ant-picker`, `.MuiDatePicker` | calendar popup classes | `DatePicker`, `RangePicker` |

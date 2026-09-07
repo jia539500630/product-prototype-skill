@@ -18,7 +18,7 @@ From DOM (headless dump or fetched HTML):
 From CSS:
 
 ```
-rg -o '\.[A-Za-z][A-Za-z0-9_-]{2,}' *.css | sort | uniq -c | sort -rn | head -120
+rg -o '\.[A-Za-z][A-Za-z0-9_-]{2,}' <artifact-root> -g '*.css' | sort | uniq -c | sort -rn | head -120
 ```
 
 Group by **root prefix**: tokens that share `foo-` / `foo__` / `Foo-` (BEM, Element `el-dialog__header`, MUI `MuiDialog-paper`, product `biz-filter-bar`). A prefix with **3+ related selectors** is a candidate even if the name is unknown.
@@ -30,16 +30,15 @@ From JS bundles:
 
 ### 2. Decide “this is a component”
 
-Promote a candidate when **two or more** hold:
+Score candidates before promotion:
 
-| Signal | Why it suggests a component |
+| Signal | Score |
 | --- | --- |
-| Repeated isomorphic subtrees | Same child tag/class order appears ≥2 times (rows, tabs, cards, steps, tree nodes) |
-| Slot-shaped children | Root contains named regions: header/title + body/content + footer/actions, or list + item, or label + control |
-| Dedicated CSS subtree | Selectors under one prefix style layout *and* states (`:hover`, `.is-active`, `--selected`, `__item`) |
-| Landmark roles | `dialog`, `tablist`, `tree`, `menu`, `navigation`, `progressbar`, `switch`, `grid` |
-| Overlay / portal pattern | Sibling mask + centered/fixed panel, or `position:fixed` + high z-index panel |
-| JS name | Exported/registered symbol maps to the CSS/DOM root |
+| Runtime DOM repetition, stable slots, landmark role, or overlay structure | 2 |
+| Dedicated CSS subtree with layout and state selectors | 1 |
+| Matching exported/registered JS component symbol | 1 |
+
+Promote at score **>= 3** only when at least one structural signal exists. DOM-backed candidates are `source`; candidates supported only by CSS and/or JS are `inferred`. A lone framework signature is neither a component nor a component candidate. A CSS/JS-only component must expose a root plus at least one child, slot, or state before it can be demoed.
 
 Do **not** require a match in the library table. A `filter-panel` with toolbar + chips + reset is a component.
 
